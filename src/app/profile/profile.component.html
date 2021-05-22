@@ -1,0 +1,164 @@
+<div class="container  jumbotron  d-flex justify-content-center" >
+   
+    <div class=" h-100 " style="width: 40%; height: 250px;">
+        <!-- <div class="" style="height: 300px; background-color: red;"> -->
+
+ 
+
+            <div class="card hovercard">
+                
+                <div class="avatar">
+                    <a data-toggle="modal" data-target="#editProfileModal" style="cursor: pointer;"> <img alt="" [src]="retrievedImage" *ngIf="retrievedImage"> </a>
+                    <img alt="Loading..." src="../../assets/proflepic.jpg" *ngIf="!retrievedImage" ><br>
+                    <a  data-toggle="modal" data-target="#addProfileModal" style="cursor: pointer; text-decoration: none;" *ngIf="!retrievedImage">Add Profile Picture</a>
+                </div>
+                <!-- <button type="submit" class="btn btn-secondary" >Add</button> -->
+                <div class="info">
+                    <div class="title">
+                        <h1 >{{currentUser.username}}</h1>  
+                    </div>
+                    <div >{{currentUser.email}}</div><br>
+                    <div><b>{{currentUser.roles}}</b></div>
+                </div>
+             
+            </div>
+            
+        <!-- </div> -->
+    </div>
+</div>
+
+     <!-- Modal -->
+     <div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="editProfileModalLongTitle">Edit Profile</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+    
+             <!-- Form start here -->
+             <form 
+                
+             name="form"
+             #f="ngForm"
+             (ngSubmit)="f.form.valid && onSubmit()"
+            
+             novalidate
+             >
+
+             <div class="container  jumbotron  d-flex justify-content-center" >
+   
+                            <div >
+                                <img alt="" [src]="retrievedImage"  class="profileImage">
+                                
+                            </div>
+                            <!-- <div>
+                                <button (click)="editProfilePic()" class="btn btn-secondary" style=" margin-right: 10px; margin-top: 10px;">Edit</button>
+                                <button (click)="removeProfilePic(id)" class="btn btn-danger" style=" margin-top: 10px;" >Remove</button>
+                            </div> -->
+                            
+                            <!-- <div class="info">
+                                <div class="title">
+                                    <h1 >{{currentUser.username}}</h1>  
+                                </div>
+                                <div >{{currentUser.email}}</div><br>
+                                <div><b>{{currentUser.roles}}</b></div>
+                            </div> -->
+                    
+                        
+                    <!-- </div> -->
+               
+            </div>
+    
+  
+                 <div class="modal-footer">
+                      
+                     <button class="btn btn-primary" data-toggle="modal" data-target="#updateProfileModal" >Change</button>
+                    <button (click)="removeProfilePic(id)" class="btn btn-danger"  >Remove</button>
+                   </div>
+                 
+               </form>
+    
+    
+            </div>
+        
+          </div>
+        </div>
+      </div>
+    <br>
+
+     <!-- Modal -->
+     <div class="modal fade" id="addProfileModal" tabindex="-1" role="dialog" aria-labelledby="addProfileModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="addProfileModalLongTitle">Add Profile Picture</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+    
+             <!-- Form start here -->
+             <form 
+                
+             name="form"
+             #f="ngForm"
+             (ngSubmit)="f.form.valid && onSubmit()"
+             novalidate
+             >      
+                <div class="form-group">
+                  <label for="inputProfilePicture">Profile Picture</label>
+                  <input type="file" class="form-control" name="file" id="profile" (change)="selectFileHandler($event)" required/>
+                </div>
+     
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                     <button (click)="uploadProfilePicture()" type="submit" class="btn btn-success">Add</button>
+                   </div>
+                 
+               </form>
+    
+    
+            </div>
+        
+          </div>
+        </div>
+      </div>
+    <br>
+
+    <!-- Modal -->
+    <div class="modal fade" id="updateProfileModal" tabindex="-1" role="dialog" aria-labelledby="addProfileModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addProfileModalLongTitle">Add Profile Picture</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+  
+           <!-- Form start here -->
+              
+              <div class="form-group">
+                <label for="inputProfilePicture">Update Profile Picture</label>
+                <input type="file" class="form-control" name="file" id="profile" (change)="selectFileHandler($event)" required/>
+              </div>
+   
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                   <button (click)="editProfilePic()" type="submit" class="btn btn-success">Update</button>
+                 </div>
+               
+
+  
+  
+          </div>
+      
+        </div>
+      </div>
+    </div>

@@ -1,0 +1,248 @@
+
+<!--View active  users-->
+
+<div class="table-responsive">
+    <table class="table table-striped" [hidden]="!isCustomerDetail">
+      <thead>
+        <tr>
+          <th scope="col" (click)="sort('id')">#<i class="fa fa-sort"></i></th>
+          <th scope="=col" (click)="sort('fullname')" >Fullname<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('username')" >Username<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('email')">Email<i class="fa fa-sort"></i></th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+    
+        <tr *ngFor="let activeCustomer of customerDetail  | orderBy: key:reverse |  paginate: { itemsPerPage: 1,currentPage: page }  " >
+          <td>{{activeCustomer.id }}</td>
+          <td>{{activeCustomer.fullname}}</td>
+          <td>{{activeCustomer.username}}</td>
+          <td>{{activeCustomer.email}}</td>
+          <td>
+            <button class="btn btn-danger"
+            mwlConfirmationPopover
+              [popoverTitle]="popoverTitle"
+              [popoverMessage]="popoverMessage"
+              placement="left"
+              (confirm)="deleteCustomer(activeCustomer.id)"
+              (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button>|
+              <button (click)="activeCustomerClicked(activeCustomer.id)" class="btn btn-secondary" 
+              data-toggle="modal" data-target="#editCustomerModal"><i class="fas fa-edit"></i></button>|
+              <button (click)="activeCustomerClicked(activeCustomer.id)" class="btn btn-success" 
+              data-toggle="modal" data-target="#viewCustomerModal"><i class="fas fa-eye"></i></button>
+          </td> 
+       </tr>
+    
+    </tbody>
+    </table>
+    </div>
+  
+  <div *ngIf="isCustomerDetail">
+    <pagination-controls (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+    </div>
+  
+  
+
+   <!--View InactiveCustomer-->
+<div class="table-responsive">
+    <table class="table  table-striped " [hidden]="!isInactiveCustomer">
+      <thead>
+        <tr>
+          <th scope="col" (click)="sort('id')">#<i class="fa fa-sort"></i></th>
+          <th scope="col"  (click)="sort('inactiveCustomerName')">InactiveCustomerName<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('username')">Username<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('email')">Email<i class="fa fa-sort"></i></th>
+          <th>Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inactiveUser of inactiveCustomerDetail   | orderBy: key:reverse |  paginate: { itemsPerPage: 1,currentPage: page }  ">
+          <td>{{ inactiveUser.id }}</td>
+          <td>{{ inactiveUser.fullname }}</td>
+          <td>{{ inactiveUser.username }}</td>
+          <td>{{ inactiveUser.email }}</td>
+          <td>{{ inactiveUser.active }}</td>
+          <td><button (click)="changeActiveStatusOfCustomer(inactiveUser.id)" class="btn btn-secondary">
+            <i class="fas fa-edit"></i></button>|
+            <button (click)="activeCustomerClicked(inactiveUser.id)" class="btn btn-success" 
+            data-toggle="modal" data-target="#viewCustomerModal"><i class="fas fa-eye"></i></button></td>
+    
+      </tr>
+    
+    </tbody>
+    </table>
+    </div>
+    <div *ngIf="isInactiveCustomer">
+      <pagination-controls (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+      </div>
+
+    <!--Modal start here for  view active customer detail-->
+
+<div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editCustomerModalLongTitle">Edit Customer Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          
+          <form
+          >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputCustomerFullname">Fullname</label>
+            <input type="text"  [(ngModel)]="fullname" name="customerFullname" class="form-control" id="inputCustomerFullname" >
+            </div>
+
+          <div class="form-group col-md-6">
+            <label for="inputUsername1">Username</label>
+            <input type="text"[(ngModel)]="username" name="username" class="form-control" id="inputUsername" readonly>
+          </div>
+          </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputAddress">Address</label>
+              <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="inputAddress"  >
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="inputGender">Gender</label>
+                <input type="text" [(ngModel)]="gender" name="gender"  class="form-control" id="inputGender" > 
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputEmail">Email</label>
+              <input type="email" [(ngModel)]="email" name="email" class="form-control" id="inputEmail"  readonly>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputIdType">IdType</label>
+              <input type="text"  [(ngModel)]="idType" name="idType" class="form-control" id="inputIdType"  >
+              </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputIdNumber">IdNumber</label>
+              <input type="text"[(ngModel)]="idNumber" name="idNumber" class="form-control" id="inputIdNumber"  >
+            </div>
+            </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputPhoneNo">Phone</label>
+            <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhoneNo" >
+            </div>
+
+           <div class="form-group col-md-6">
+              <label for="inputAge">Age</label>
+              <input type="number" [(ngModel)]="age" name="age" class="form-control" id="inputAge"  >
+            </div>
+          </div>
+
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button (click)="editActiveCustomer(userId) " type="submit" class="btn btn-success">Edit</button>
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal start here for  view active customer detail-->
+
+<div class="modal fade" id="viewCustomerModal" tabindex="-1" role="dialog" aria-labelledby="viewCustomerModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewCustomerModalLongTitle">Customer Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          
+          <form
+          >
+          <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputCustomerFullname">Fullname</label>
+            <input type="text"  [(ngModel)]="fullname" name="customerFullname" class="form-control" id="inputCustomerFullname1"  readonly>
+            </div>
+
+          <div class="form-group col-md-6">
+            <label for="inputUsername1">Username</label>
+            <input type="text"[(ngModel)]="username" name="username" class="form-control" id="inputUsername1"  readonly>
+          </div>
+          </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputAddress">Address</label>
+              <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="inputAddress1"  readonly>
+              </div>
+
+              <div class="form-group col-md-4">
+                <label for="inputGender">Gender</label>
+                <input type="text" [(ngModel)]="gender" name="gender"  class="form-control" id="inputGender1" readonly> 
+                </div>
+            </div>
+
+            <div class="form-group">
+              <label for="inputEmail">Email</label>
+              <input type="email" [(ngModel)]="email" name="email" class="form-control" id="inputEmail1" readonly>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputIdType">IdType</label>
+              <input type="text"  [(ngModel)]="idType" name="idType" class="form-control" id="inputIdType1"  readonly>
+              </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputIdNumber">IdNumber</label>
+              <input type="text"[(ngModel)]="idNumber" name="idNumber" class="form-control" id="inputIdNumber1"  readonly>
+            </div>
+            </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputPhoneNo">Phone</label>
+            <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhoneNo1" readonly>
+            </div>
+
+           <div class="form-group col-md-6">
+              <label for="inputAge">Age</label>
+              <input type="number" [(ngModel)]="age" name="age" class="form-control" id="inputAge1"  readonly>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    
+    
+    

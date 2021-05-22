@@ -1,0 +1,39 @@
+<div class="col-md-12">
+    <div class="card card-container">
+ 
+      <label><strong>Add Room here</strong> </label>
+      <br>
+      <br>
+  
+      <form
+        *ngIf="!isSuccessful"
+        name="form"
+        #f="ngForm"
+        (ngSubmit)="f.form.valid && onSubmit()"
+       
+        novalidate
+      >
+
+      
+        <div class="form-group">
+          <label for="roomnumber">Room Number:</label>
+          <input
+            type="number"
+            class="form-control"
+            name="roomnumber"
+            [(ngModel)]="form.roomnumber"
+            required
+
+            #roomnumber="ngModel"
+          />
+          
+          <div class="alert-danger" *ngIf="f.submitted && roomnumber.invalid">
+            <div *ngIf="roomnumber.errors?.required">Room number is required</div>
+          
+        </div>
+         
+        </div>
+    </form>
+    </div>
+</div>
+    

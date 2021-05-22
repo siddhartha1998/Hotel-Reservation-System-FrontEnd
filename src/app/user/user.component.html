@@ -1,0 +1,73 @@
+<!--registered user detail-->
+<div class="table-responsive">
+    <table class="table table-striped table-hover" [hidden]="!isRegisteredUser">
+        <thead>
+          <tr>
+            <th scope="col" (click)="sort('userId')">#<i class="fa fa-sort"></i></th>
+            <th scope="col" (click)="sort('username')">Username <i class="fa fa-sort"></i></th>
+            <th scope="col" (click)="sort('email')">Email <i class="fa fa-sort"></i></th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let registeredUser of registeredUserDetail | orderBy: key:reverse | paginate: { itemsPerPage: 6,currentPage: page }  " >
+         <td>{{registeredUser.userId}}</td>
+         <td>{{registeredUser.username}}</td>
+         <td>{{registeredUser.email}}</td>
+         <!-- <td><button (click)="deleteUser(registeredUser.userId)" class="btn btn-danger"><i class="fas fa-trash"></i></button>|  -->
+        <td> 
+          <!-- <button (click)="editCustomer(registeredUser.userId)" class="btn btn-secondary"><i class="fas fa-edit"></i></button>| -->
+          <button (click)="UserClicked(registeredUser.userId)" class="btn btn-success" data-toggle="modal" data-target="#registeredUserModalView"><i class="fas fa-eye"></i></button></td> 
+        </tr>
+      
+    </tbody>
+  </table>
+  </div>
+  <div *ngIf="isRegisteredUser">
+    <pagination-controls  (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+    </div>
+<br>
+
+
+<!-- View registered user modal-->
+<!--Modal start here-->
+<div class="modal fade" id="registeredUserModalView" tabindex="-1" role="dialog" aria-labelledby="registeredUserModalViewCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="registeredUserModalViewLongTitle">View Registered User</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form
+          >
+            <div class="form-group">
+              <label for="viewUserName">UserName</label>
+              <input type="text" [(ngModel)]="username" name="username" class="form-control" id="viewUserName" readonly>
+            </div>
+              
+            <div class="form-group">
+              <label for="viewEmail">Email</label>
+              <input type="email"[(ngModel)]= "email" name="email" class="form-control" id="viewEmail" readonly>
+            </div>
+
+            <div class="form-group">
+              <label for="viewRole">Role</label>
+              <input type="text" [(ngModel)]="role" name="role" class="form-control" id="viewRole" readonly >
+            </div>
+ 
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
