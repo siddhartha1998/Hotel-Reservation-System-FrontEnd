@@ -76,6 +76,9 @@ export class HotelComponent implements OnInit {
     this.key=key;
     this.reverse= !(this.reverse);
 }
+  
+  howIsThis(){
+  }
 
       viewActiveHotel(){
         this.userService.getAllHotel().subscribe(
