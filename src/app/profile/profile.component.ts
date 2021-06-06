@@ -90,9 +90,9 @@ if(image){
 }
 }
 
-onSubmit(){
+// onSubmit(){
   
-}
+// }
 
 editProfilePic(){
 

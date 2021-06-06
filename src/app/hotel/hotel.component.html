@@ -1,6 +1,21 @@
 
- <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#addHotelDetailModal"><i class="fa fa-plus" aria-hidden="true"></i>Add Hotel Detail</button>
-<br><br>
+<div class="input-group">
+  <input type="search" class="form-control rounded" placeholder="Search Hotel by hotel Name,hotel address,  and city" 
+  [(ngModel)]="searchResult" 
+  (ngModelChange)="search()" aria-label="Search"
+    aria-describedby="search-addon" />
+</div>
+    <br>
+
+ <button type="submit" (click)="viewUserAuthentication() " class="btn btn-primary"  *ngIf="showAddHotelButton"
+ data-toggle="modal" data-target="#addHotelDetailModal">
+   <i class="fa fa-plus" aria-hidden="true"></i>Add Hotel Detail</button>
+
+<button type="submit" (click)=" viewActiveHotel()" class="btn btn-primary"  *ngIf="showAddHotelButton" 
+style="margin-left: 10px;"
+data-toggle="modal" data-target="#addHotelDocument">
+  <i class="fa fa-plus" aria-hidden="true"></i>Add Hotel Document</button>
+<br>
 <!-- <div class="col-md-8">
     <div class="card card-container"> -->
       
@@ -17,81 +32,95 @@
         <div class="modal-body">
 
          <!-- Form start here -->
-         <form 
-            
-         name="form"
-         #f="ngForm"
-         (ngSubmit)="f.form.valid && onSubmit()"
-        
-         novalidate
-         >
+         <form >
          <div class="form-group">
-          <label for="InputHotelName">HotelName</label>
-          <input type="text" [(ngModel)]="hotelName" name="hotelName" class="form-control" id="InputHotelName" aria-describedby="hotelNameHelp" placeholder="Enter HotelName">
-         </div>
+             <div class="container" style="width: 18 rem">
+               <label style="text-align: center;"><strong>Username</strong></label>
+               <select (change)="changeUsernameHandler($event)" class="form-control">
+                 <option selected>--select--</option>
+                 <option
+                   *ngFor="let user of registeredHotel"
+                   value="{{user.userId}}"
+                 >
+                   {{ user.username }}
+                 </option>
+                 >
+               </select>
+             </div>
+            </div>
 
+          <div class="form-group">
+          <label for="InputHotelName">HotelName</label>
+          <input type="text" [(ngModel)]="hotelName" name="hotelName" class="form-control" 
+          id="InputHotelName" placeholder="Enter HotelName">
+         </div>
+         
          <div class="form-row">
           <div class="form-group col-md-6">
-                 <label for="exampleInputHotelUsername1">Username</label>
-                 <input type="text" [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="exampleInputHotelUsername1" aria-describedby="usernameHelp" placeholder="Enter username">
+                 <label for="status">Status</label>
+                 <input type="text" [(ngModel)]="status" name="status" class="form-control" 
+                 id="status"  placeholder="Enter hotel Status (eg. 3*, 5*)">
                </div>
 
                <div class="form-group col-md-6">
                 <label for="inputHotelOwner">HotelOwner</label>
-                <input type="text" [(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner" aria-describedby="hotelOwnerHelp" placeholder="Enter HotelOwner">
+                <input type="text" [(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" 
+                id="inputHotelOwner"  placeholder="Enter HotelOwner">
                </div>
            </div>
 
                <div class="form-row">
                 <div class="form-group col-md-6">
                 <label for="inputCity">City</label>
-                <input type="text" [(ngModel)]="city" name="city" class="form-control" id="inputCity" aria-describedby="cityHelp" placeholder="Enter Hotel city">
+                <input type="text" [(ngModel)]="city" name="city" class="form-control" 
+                id="inputCity" placeholder="Enter Hotel city">
                </div>
 
                <div class="form-group col-md-6">
               <label for="inputHotelAddress">Hotel Address</label>
-              <input type="text" [(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress" aria-describedby="hotelAddressHelp" placeholder="Enter Hotel Address">
+              <input type="text" [(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" 
+              id="inputHotelAddress"  placeholder="Enter Hotel Address">
              </div>
              </div>
 
              <div class="form-row">
               <div class="form-group col-md-6">
               <label for="inputPhone">Phone</label>
-              <input type="number" [(ngModel)]="phone" name="phone" class="form-control" id="inputPhone" aria-describedby="phoneHelp" placeholder="Enter phone number">
+              <input type="number" [(ngModel)]="phone" name="phone" class="form-control"
+               id="inputPhone"  placeholder="Enter phone number">
             </div>
 
             <div class="form-group col-md-6">
               <label for="inputPanNumber">Pan Number</label>
-              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber" aria-describedby="panNumberHelp" placeholder="Enter pan number">
+              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control"
+               id="inputPanNumber"  placeholder="Enter pan number">
             </div>
              </div>
-
-            <div class="form-group">
-              <label for="inputDocument">Document</label>
-              <input type="file" [(ngModel)]="document" name="document" class="form-control" id="inputDocument" aria-describedby="documentHelp" >
-            </div>
  
             <div class="form-group">
               <label for="inputDescription">Description</label>
-              <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription" aria-describedby="descriptionHelp">
+              <input type="text" [(ngModel)]="description" name="description" class="form-control" 
+              id="inputDescription" aria-describedby="descriptionHelp">
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
               <label for="inputLatitude">Latitude</label>
-              <input type="text" [(ngModel)]="latitude" name="latitude" class="form-control" id="inputLatitude" aria-describedby="descriptionHelp"  placeholder="Enter Latitude">
+              <input type="text" [(ngModel)]="latitude" name="latitude" class="form-control" 
+              id="inputLatitude" aria-describedby="descriptionHelp"  placeholder="Enter Latitude">
             </div>
 
             <div class="form-group col-md-6">
               <label for="inputLongitude">Longitude</label>
-              <input type="text" [(ngModel)]="longitude" name="longitude" class="form-control" id="inputLongitude" aria-describedby="longitudeHelp"  placeholder="Enter Longitude">
+              <input type="text" [(ngModel)]="longitude" name="longitude" class="form-control" 
+              id="inputLongitude" aria-describedby="longitudeHelp"  placeholder="Enter Longitude">
             </div>
             </div>
 
              
              <div class="modal-footer">
                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                 <button type="submit" class="btn btn-success">Add</button>
+                 <button type="submit" (click)="addHotelDetail()" class="btn btn-success">Add</button>
                </div>
              
            </form>
@@ -100,6 +129,7 @@
       </div>
     </div>
   </div>
+  
 <br>
 
 <!--Hotel detail-->
@@ -116,21 +146,34 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let hotel of hotelDetail  | orderBy : key:reverse  |  paginate: { itemsPerPage: 1, currentPage: page,totalItems: totalRecords }">
+        <tr *ngFor="let hotel of hotelDetail  | orderBy : key:reverse  | 
+         paginate: { itemsPerPage: 5, currentPage: page,totalItems: totalRecords }">
              <td>{{ hotel.id }}</td> 
              <td>{{ hotel.hotelName }}</td> 
              <td>{{ hotel.hotelUsername }}</td>
              <td>{{ hotel.hotelAddress }}</td>
              <td>{{ hotel.active }}</td>
-             <td><button class="btn btn-danger"
+             
+            <td><button class="btn btn-danger"
               mwlConfirmationPopover
                 [popoverTitle]="popoverTitle"
                 [popoverMessage]="popoverMessage"
                 placement="left"
                 (confirm)="deleteHotel(hotel.id)"
                 (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button>|
-                <button (click)="HotelClicked(hotel.id)" class="btn btn-secondary"  data-toggle="modal" data-target="#editHotelModal"><i class="fas fa-edit"></i></button>|
-                <button  (click)="HotelClicked(hotel.id)" class="btn btn-success"  data-toggle="modal" data-target="#viewHotelModal"><i class="fas fa-eye"></i></button></td> 
+
+                <button (click)="HotelClicked(hotel.id)" class="btn btn-secondary" 
+                 data-toggle="modal" data-target="#editHotelModal"><i class="fas fa-edit"></i></button>|
+
+                <button  (click)="HotelClicked(hotel.id)" class="btn btn-success"
+                  data-toggle="modal" data-target="#viewHotelModal"><i class="fas fa-eye"></i></button>|
+
+                  <button  class="btn btn-primary"  (click)="HotelClicked(hotel.id)"
+                  data-toggle="modal" data-target="#addHotelPictureModal"><i class="fas fa-plus"></i></button>|
+                
+                 <a   class="btn btn-primary"  [routerLink]="['/hotel-picture', hotel.id]">  
+                  <i class="fas fa-eye"></i></a>
+              </td> 
       </tr>
       </tbody>
   </table>
@@ -156,7 +199,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let inactiveHotel of inactivehotelDetail   | orderBy : key:reverse  |  paginate: { itemsPerPage: 1, currentPage: page,totalItems: totalRecords }">
+      <tr *ngFor="let inactiveHotel of inactivehotelDetail   | orderBy : key:reverse  |  paginate: { itemsPerPage: 5, currentPage: page,totalItems: totalRecords }">
         <td>{{ inactiveHotel.id }}</td>
         <td>{{ inactiveHotel.hotelName }}</td>
         <td>{{ inactiveHotel.hotelUsername }}</td>
@@ -177,7 +220,8 @@
 <br>
 
 <!--Modal start here for edit hotel detail-->
-<div class="modal fade" id="editHotelModal" tabindex="-1" role="dialog" aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="editHotelModal" tabindex="-1" role="dialog" 
+aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -193,53 +237,54 @@
              
             <div class="form-group">
               <label for="inputHotelName">HotelName</label>
-              <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName" >
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName3" >
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
               <label for="inputHotelUserName">HotelUserName</label>
-              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="inputHotelUserName" readonly >
+              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername"
+               class="form-control" id="inputHotelUserName3" readonly >
               </div>
 
             <div class="form-group col-md-6">
               <label for="inputHotelOwner">HotelOwner</label>
-              <input type="text"[(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner" >
+              <input type="text"[(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner3" >
             </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
               <label for="inputCity">City</label>
-              <input type="text"  [(ngModel)]="city" name="city" class="form-control" id="inputCity" >
+              <input type="text"  [(ngModel)]="city" name="city" class="form-control" id="inputCity3" >
               </div>
 
             <div class="form-group col-md-6">
               <label for="inputHotelAddress">Address</label>
-              <input type="text"[(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress" >
+              <input type="text"[(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress3" >
             </div>
             </div>
 
           <div class="form-row">
             <div class="form-group col-md-6">
             <label for="inputPhone">Phone</label>
-            <input type="text" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhone" >
+            <input type="text" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhone3" >
             </div>
 
            <div class="form-group col-md-6">
               <label for="inputPanNumber">PanNumber</label>
-              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber" >
+              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber3" >
             </div>
           </div>
 
           <div class="form-group">
             <label for="inputDocument">Document</label>
-            <input type="file" [(ngModel)]="document" name="document" class="form-control" id="inputDocument" >
+            <input type="file" [(ngModel)]="document" name="document" class="form-control" id="inputDocument3" >
           </div>
 
            <div class="form-group">
             <label for="inputDescription">Description</label>
-            <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription" >
+            <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription3" >
           </div>
 
           <div class="modal-footer">
@@ -271,53 +316,53 @@
              
             <div class="form-group">
               <label for="inputHotelName">HotelName</label>
-              <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName"  readonly>
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName4"  readonly>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
               <label for="inputHotelUserName">HotelUserName</label>
-              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="inputHotelUserName" readonly >
+              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="inputHotelUserName4" readonly >
               </div>
 
             <div class="form-group col-md-6">
               <label for="inputHotelOwner">HotelOwner</label>
-              <input type="text"[(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner" readonly>
+              <input type="text"[(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner4" readonly>
             </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
               <label for="inputCity">City</label>
-              <input type="text"  [(ngModel)]="city" name="city" class="form-control" id="inputCity"  readonly>
+              <input type="text"  [(ngModel)]="city" name="city" class="form-control" id="inputCity4"  readonly>
               </div>
 
             <div class="form-group col-md-6">
               <label for="inputHotelAddress">Address</label>
-              <input type="text"[(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress"  readonly>
+              <input type="text"[(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress4"  readonly>
             </div>
             </div>
 
           <div class="form-row">
             <div class="form-group col-md-6">
             <label for="inputPhone">Phone</label>
-            <input type="text" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhone"  readonly>
+            <input type="text" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhone4"  readonly>
             </div>
 
            <div class="form-group col-md-6">
               <label for="inputPanNumber">PanNumber</label>
-              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber" readonly>
+              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber4" readonly>
             </div>
           </div>
 
           <div class="form-group">
             <label for="inputDocument">Document</label>
-            <input type="file" [(ngModel)]="document" name="document" class="form-control" id="inputDocument" readonly>
+            <input type="file" [(ngModel)]="document" name="document" class="form-control" id="inputDocument4" readonly>
           </div>
 
            <div class="form-group">
             <label for="inputDescription">Description</label>
-            <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription" readonly>
+            <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription4" readonly>
           </div>
 
           <div class="modal-footer">
@@ -330,4 +375,93 @@
     </div>
   </div>
 </div>
+
+
+
+     <!-- Modal for add  hotel picture -->
+     <div class="modal fade" id="addHotelPictureModal" tabindex="-1" role="dialog" aria-labelledby="addHotelPictureModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="addHotelPictureModalLongTitle">Add Hotel Picture</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+  
+           <!-- Form start here -->
+           <form>      
+              <div class="form-group">
+                <label for="inputHotelPicture">Hotel Picture</label>
+                <input type="file" class="form-control" name="file" id="hotelpicture" (change)="selectFileHandler($event)" required/>
+              </div>
+   
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                   <button (click)=" uploadHotelPicture(hotelId)" type="submit" class="btn btn-success">Upload</button>
+                 </div>
+               
+             </form>
+  
+  
+          </div>
+      
+        </div>
+      </div>
+    </div>
+  <br>
+
+    <!-- Modal for add  hotel picture -->
+    <div class="modal fade" id="addHotelDocument" tabindex="-1" role="dialog" aria-labelledby="addHotelDocumentCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title" id="addHotelDocumentLongTitle">Add Hotel Document</h3>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+  
+           <!-- Form start here -->
+           <form>    
+            
+            <div class="form-group">
+              <div class="container" style="width: 18 rem">
+                <label style="text-align: center;"><strong>HotelName</strong></label>
+                <select (change)="changeUsernameHandler($event)" class="form-control">
+                  <option selected>--select--</option>
+                  <option
+                    *ngFor="let h of hotelDetail"
+                    value="{{h.id}}"
+                  >
+                    {{ h.hotelName }}
+                  </option>
+                  >
+                </select>
+              </div>
+             </div>
+            
+              <div class="form-group">
+                <label for="inputHotelDocument"><strong>Hotel Document</strong></label>
+                <input type="file" class="form-control" name="file" id="hotelDocument" (change)="selectDocumentFileHandler($event)" required/>
+              </div>
+   
+               <div class="modal-footer">
+                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                   <button (click)=" uploadHotelDocument(userId)" type="submit" class="btn btn-success">Upload</button>
+                 </div>
+               
+             </form>
+  
+  
+          </div>
+      
+        </div>
+      </div>
+    </div>
+  <br>
+
+
 

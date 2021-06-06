@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { LocationService } from '../_services/location.service';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -23,11 +24,17 @@ value:any;
   constructor(
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private activatedRouter:ActivatedRoute
+    private activatedRouter:ActivatedRoute,
+    private locationService : LocationService
   ) {}
 
   ngOnInit(): void {
     this.value=this.activatedRouter.snapshot.params.id;
+
+ this.locationService.getPosition().then(pos=>
+  {
+     console.log(`Positon: ${pos.lng} ${pos.lat}`);
+  });
 
    
    
@@ -36,9 +43,8 @@ value:any;
  
   //add hotel
   onSubmit() {
-    console.log('i am from on submit ' + this.roles);
-    this.userService
-      .addHotel(this.username, this.email, this.password, this.roles)
+    // console.log('i am from on submit ' + this.roles);
+    this.userService.addHotel(this.username, this.email, this.password, this.roles)
       .subscribe(
         (res) => {
           this.snackBar.open(res.message, 'Dismiss', {
@@ -47,7 +53,7 @@ value:any;
             horizontalPosition: 'right',
             panelClass: ['success-snackBar'],
           });
-          this.reloadPage();
+          // this.reloadPage();
         },
         (err) => {
           console.log(err);

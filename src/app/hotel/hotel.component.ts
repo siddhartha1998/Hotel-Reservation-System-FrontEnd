@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { LocationService } from '../_services/location.service';
 import { UserService } from '../_services/user.service';
+import { Hotel } from './hotel.model';
 
 
 @Component({
@@ -13,6 +15,8 @@ export class HotelComponent implements OnInit {
 
   totalRecords : any;
   page: number = 1;
+  searchResult:any;
+  roles:any[]=[];
 
   form: any = {};
   isSuccessful = false;
@@ -24,7 +28,11 @@ export class HotelComponent implements OnInit {
   isInactiveHotel:any;
   inactivehotelDetail:any;
   editHotelDetail:any;
+
+  registeredHotel:Array<Hotel> = new Array<Hotel>();
  
+  userId:any;
+  userDetail:any[]=[];
  value:any;
  hotelId:any;
  hotelName:any;
@@ -36,8 +44,16 @@ export class HotelComponent implements OnInit {
   panNumber:any;
   document:any;
   description:any;
+  status:any;
   latitude:any;
   longitude:any;
+
+  showAddHotelButton:boolean=false;
+
+  selectedFile:any;
+  isSelectedFile:boolean=false;
+  progress:any;
+  currentUser:any;
 
   popoverTitle:string="Are you sure you want to delete?";
   popoverMessage:string="You can not undo this operation after you confirm to delete.";
@@ -45,13 +61,18 @@ export class HotelComponent implements OnInit {
 
   constructor(private userService : UserService,
                       private activatedRouter  :ActivatedRoute,
-                      private snackBar : MatSnackBar
+                      private snackBar : MatSnackBar,
+                      private locationService : LocationService
               ) { }
 
   ngOnInit(): void {
 
     this.value=this.activatedRouter.snapshot.params.id;
-    console.log(this.value);
+    this.locationService.getPosition().then(pos=>
+      {
+         console.log(`Positon: ${pos.lng} ${pos.lat}`);
+      });
+    // console.log(this.value);
     if(this.value == "activeHotel"){
       
         this.viewActiveHotel();
@@ -77,12 +98,39 @@ export class HotelComponent implements OnInit {
     this.reverse= !(this.reverse);
 }
 
+changeUsernameHandler(event:any){
+  this.userId=parseInt(event.target.value);
+}
+
+search(){
+  if(this.searchResult == ""){
+    this.ngOnInit();
+  }else{
+    this.hotelDetail=this.hotelDetail.filter((res:any) =>{
+      //console.log(res);
+
+      if(res.hotelName.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
+      return res.hotelName.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase());
+      }
+      if(res.hotelAddress.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
+        return res.hotelAddress.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())
+      }
+      if(res.city.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
+        return res.city.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase());
+        }
+        
+    });
+  }
+}
+
+
       viewActiveHotel(){
         this.userService.getAllHotel().subscribe(
           (res) => {
             this.hotelDetail = res;
             this.isHotelDetail = true;
             this.isInactiveHotel=false;
+            this.showAddHotelButton=true;
           },
           (err) => {
             console.log(err);
@@ -90,6 +138,27 @@ export class HotelComponent implements OnInit {
         );
       }
 
+      viewUserAuthentication(){
+          this.registeredHotel = new Array<Hotel>();
+        this.userService.getRegisteredUser().subscribe(
+          res=>{
+           // this.userDetail=res;
+           for (let i = 0; i< res.length; i++) {
+
+            if(res[i].roles[0].name == "ROLE_HOTEL"){
+
+            
+              this.registeredHotel.push(res[i]);
+            }
+       
+           }
+           
+          },
+          err=>{
+            console.log(err);
+          }
+        );
+      }
        //view all inactive hotels
   viewInactiveHotel() {
     this.userService.getInactiveHotel().subscribe(
@@ -97,7 +166,7 @@ export class HotelComponent implements OnInit {
          this.inactivehotelDetail = res;
         this.isInactiveHotel = true;
         this.isHotelDetail = false;
-       
+       this.showAddHotelButton=false;
 
       },
       (err) => {
@@ -133,6 +202,40 @@ export class HotelComponent implements OnInit {
         console.log(err);
       }
     );
+  }
+
+  addHotelDetail(){
+ this.locationService.getPosition().then(pos=>
+  {
+    console.log(`Positon: ${pos.lng} ${pos.lat}`);
+ 
+    this.userService.addHotelDetails(this.userId,this.hotelName,this.hotelOwner,this.city, this.hotelAddress,this.phone,
+      this.panNumber,this.document,  this.status,this.description,this.latitude,this.longitude
+      ).subscribe(
+    res=>{
+      this.snackBar.open(res.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+
+      });
+      this.refresh();
+      
+    },
+    err=>{
+      this.snackBar.open(err.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackBar'],
+
+      });
+      this.refresh();
+      
+    }
+    );
+  });
   }
 
   //edit active Hotel
@@ -193,7 +296,87 @@ export class HotelComponent implements OnInit {
         console.log(err);
       }
     );
-
   }
+
+  selectFileHandler(event:any){
+    this.selectedFile=event.target.files[0];
+    this.isSelectedFile=true;
+  }
+
+  selectDocumentFileHandler(event:any){
+    this.selectedFile=event.target.files[0];
+    this.isSelectedFile=true;
+  }
+
+  uploadHotelPicture(id:any){
+    // this.isLoading = true;
+   const uploadProfileImage:FormData = new FormData();
+   uploadProfileImage.append('hotelPic',this.selectedFile, this.selectedFile.name);
+   this.userService.addHotelPicture(id,uploadProfileImage).subscribe(
+   (res:any)=>{
+  
+    this.snackBar.open(res.message, 'Dismiss', {
+      duration: 4000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right',
+      panelClass: ['success-snackBar'],
+    });
+    this.refresh();
+  //  this.isLoading = false;
+  
+   },
+   err =>{
+   this.progress = 0;
+   this.snackBar.open(err.body.message,'Dismiss',{
+   duration: 4000,
+   verticalPosition: 'bottom',
+   horizontalPosition: 'right',
+   panelClass:['red-snackBar'],
+   });
+   
+    setTimeout(()=>{
+   window.location.reload();
+   },5000)
+   }
+   );
+   
+    }
+
+
+    uploadHotelDocument(id:any){
+      // this.isLoading = true;
+     const uploadHotelDoc:FormData = new FormData();
+     uploadHotelDoc.append('hotelDocument',this.selectedFile, this.selectedFile.name);
+     this.userService.addHotelDocument(id,uploadHotelDoc).subscribe(
+     (res:any)=>{
+    
+      this.snackBar.open(res.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      // this.refresh();
+    //  this.isLoading = false;
+    
+     },
+     err =>{
+     this.progress = 0;
+     this.snackBar.open(err.body.message,'Dismiss',{
+     duration: 4000,
+     verticalPosition: 'bottom',
+     horizontalPosition: 'right',
+     panelClass:['red-snackBar'],
+     });
+     
+      setTimeout(()=>{
+     window.location.reload();
+     },5000)
+     }
+     );
+     
+      }
+  
+
     }
   

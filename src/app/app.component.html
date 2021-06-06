@@ -108,10 +108,13 @@
               data-parent="#accordionSidebar">
               <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Custom Room:</h6>
-                  <a class="collapse-item" routerLink="/room">AC room</a>
-                  <a class="collapse-item" routerLink="/room">Non-AC room</a>
-                  <a class="collapse-item" routerLink="/room">Single-bed room</a>
-                  <a class="collapse-item" routerLink="/room">Double-bed room</a>
+                 <!-- <a class="collapse-item" routerLink="/room/all-room">All Room</a>  -->
+                 <a class="collapse-item" routerLink="/room2/active-room">Active Room</a>
+                 <a class="collapse-item" routerLink="/room1/inactive-room">Inactive Room</a>
+                
+                  
+                  <!-- <a class="collapse-item" routerLink="/room">Single-bed room</a>
+                  <a class="collapse-item" routerLink="/room">Double-bed room</a> -->
               </div>
           </div>
       </li>
@@ -131,8 +134,10 @@
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
               <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Reservation screen:</h6>
-                  <a class="collapse-item" routerLink="/login">Login</a>
-                  <a class="collapse-item" routerLink="/register">Register</a>
+                  <a class="collapse-item" routerLink="/reservation1/temporary-reservation">Temporary Reservation </a>
+                  <a class="collapse-item" routerLink="/reservation2/reservation">Reserved Room</a>
+                  <!-- <a class="collapse-item" routerLink="/reservation3/reserved-room">Reserved Room</a> -->
+                  <a class="collapse-item" routerLink="/reservation3/non-reserved-room">Non Reserved Room</a>
                   <!-- <a class="collapse-item" href="forgot-password.html">Forgot Password</a> -->
                   <!-- <div class="collapse-divider"></div>
                   <h6 class="collapse-header">Other Pages:</h6>

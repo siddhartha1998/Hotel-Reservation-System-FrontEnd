@@ -58,8 +58,8 @@
         </div>
         
         <div class="form-group">
-          <button type="submit" class="btn btn-primary btn-block">
-            Login
+          <button type="submit"class="btn btn-primary btn-block">
+            <img [hidden]="!isLoading" src="../../assets/loading.svg" style="width: 24px;" alt=""> Login
           </button>
         </div>
         <div class="form-group">
@@ -83,3 +83,10 @@
   </div>
 </div>
 
+<form>
+  <div class="form-group text-align center" >
+    <label for="partitioned">Enter OTP For Verify your email</label><br>
+    <input type="text"  class="form-control" id="partitioned" maxlength="6">
+  </div>
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

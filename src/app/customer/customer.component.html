@@ -1,3 +1,13 @@
+<div class="input-group">
+  <input type="search" class="form-control rounded" placeholder="Search Customers by name, address, gender and idType" 
+  [(ngModel)]="searchResult" 
+  (ngModelChange)="search()" aria-label="Search"
+    aria-describedby="search-addon" />
+</div>
+   
+    <button type="submit" class="btn btn-primary" (click)="viewUserAuthentication()"  *ngIf="showAddCustomerButton" style="margin-top: 8px;margin-bottom: 8px;"
+    data-toggle="modal" data-target="#addCustomerDetailModal">
+      <i class="fa fa-plus" aria-hidden="true"></i>Add Customer Detail</button>
 
 <!--View active  users-->
 
@@ -7,18 +17,20 @@
         <tr>
           <th scope="col" (click)="sort('id')">#<i class="fa fa-sort"></i></th>
           <th scope="=col" (click)="sort('fullname')" >Fullname<i class="fa fa-sort"></i></th>
-          <th scope="col" (click)="sort('username')" >Username<i class="fa fa-sort"></i></th>
-          <th scope="col" (click)="sort('email')">Email<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('address')" >Address<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('idType')" >IdType<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('gender')">Gender<i class="fa fa-sort"></i></th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
     
-        <tr *ngFor="let activeCustomer of customerDetail  | orderBy: key:reverse |  paginate: { itemsPerPage: 1,currentPage: page }  " >
+        <tr *ngFor="let activeCustomer of customerDetail  | orderBy: key:reverse |  paginate: { itemsPerPage: 5,currentPage: page }  " >
           <td>{{activeCustomer.id }}</td>
           <td>{{activeCustomer.fullname}}</td>
-          <td>{{activeCustomer.username}}</td>
-          <td>{{activeCustomer.email}}</td>
+          <td>{{activeCustomer.address}}</td>
+          <td>{{activeCustomer.idType}}</td>
+          <td>{{activeCustomer.gender}}</td>
           <td>
             <button class="btn btn-danger"
             mwlConfirmationPopover
@@ -58,7 +70,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let inactiveUser of inactiveCustomerDetail   | orderBy: key:reverse |  paginate: { itemsPerPage: 1,currentPage: page }  ">
+        <tr *ngFor="let inactiveUser of inactiveCustomerDetail   | orderBy: key:reverse |  paginate: { itemsPerPage: 5,currentPage: page }  ">
           <td>{{ inactiveUser.id }}</td>
           <td>{{ inactiveUser.fullname }}</td>
           <td>{{ inactiveUser.username }}</td>
@@ -78,7 +90,125 @@
       <pagination-controls (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
       </div>
 
-    <!--Modal start here for  view active customer detail-->
+       <!--Modal start here for  Add  customer detail-->
+
+<div class="modal fade" id="addCustomerDetailModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerDetailModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="addCustomerDetailModalLongTitle"><strong>Add Customer Detail</strong></h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          
+          <form>
+          <div class="form-row">
+
+            <div class="form-group">
+              <div class="container" style="width: 12rem">
+                <label style="text-align: center;"><strong>Username</strong></label>
+                <select (change)="changeUsernameHandler($event)" class="form-control">
+                  <option selected>--select--</option>
+                  <option
+                    *ngFor="let user of registeredUser"
+                    value="{{user.userId}}"
+                  >
+                    {{ user.username }}
+                  </option>
+                  >
+                </select>
+              </div>
+             </div>
+
+            <div class="form-group col-md-6">
+            <label for="inputCustomerFullname">Fullname</label>
+            <input type="text"  [(ngModel)]="fullname" name="customerFullname" class="form-control" id="inputCustomerFullname4" >
+            </div>
+
+          <!-- <div class="form-group col-md-6">
+            <label for="inputUsername1">Username</label>
+            <input type="text"[(ngModel)]="username" name="username" class="form-control" id="inputUsername4" readonly>
+          </div> -->
+          </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputAddress">Address</label>
+              <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="inputAddress4"  >
+              </div>
+
+              <!-- <div class="form-group col-md-6">
+                <label for="inputGender">Gender</label>
+                <input type="text" [(ngModel)]="gender" name="gender"  class="form-control" id="inputGender4" > 
+                </div> -->
+
+                
+                  <div class="form-group col-md-6">
+                    
+                    <label>Gender</label>
+                    <div class="row" style="margin-left: 5px;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender"  value="Male"
+                      id="radioForMale" (change)=changeGenderHandler($event) checked>
+                      <label >Male</label>
+                    </div>
+        
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" value="Female"
+                       id="radioForFemale" (change)=changeGenderHandler($event) >
+                      <label > Female</label>
+                    </div>
+
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" value="Others"
+                       id="radioForOther" (change)=changeGenderHandler($event) >
+                      <label >Other</label>
+                    </div>
+                  </div>
+                  </div>
+                </div>
+   
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputIdType">IdType</label>
+                <input type="text"  [(ngModel)]="idType" name="idType" class="form-control" id="inputIdType"  >
+                </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputIdNumber">IdNumber</label>
+              <input type="text"[(ngModel)]="idNumber" name="idNumber" class="form-control" id="inputIdNumber4"  >
+            </div>
+            </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+            <label for="inputPhoneNo">Phone</label>
+            <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhoneNo4" >
+            </div>
+
+           <div class="form-group col-md-6">
+              <label for="inputAge">Age</label>
+              <input type="number" [(ngModel)]="age" name="age" class="form-control" id="inputAge4"  >
+            </div>
+          </div>
+
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button (click)="addCustomer()" type="submit" data-dismiss="modal" class="btn btn-success">Add</button>
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!--Modal start here for  Edit active customer detail-->
 
 <div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">

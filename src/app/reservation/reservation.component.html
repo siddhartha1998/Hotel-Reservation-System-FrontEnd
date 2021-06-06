@@ -1,1 +1,598 @@
-<p>reservation works!</p>
+<div class="input-group">
+  <input type="search" class="form-control rounded" placeholder="Search Reservation by room Number and Room Type" 
+  [(ngModel)]="searchResult" 
+  (ngModelChange)="search()" aria-label="Search"
+    aria-describedby="search-addon" />
+</div>
+  <br>
+
+  <button class="btn btn-primary"  (click)="getHotelDetail()" *ngIf="isNonReservedRoom"
+  data-toggle="modal" data-target="#reserveRoom"><span class="material-icons">
+    book_online
+    </span> Room Reserve</button>
+
+<!--Room detail-->
+<div class="table-responsive">
+    <table class="table table-striped table-hover" *ngIf="isReservedRoom">
+        <thead>
+          <tr>
+            <th scope="col" (click)="sort('id')" >#<i class="fa fa-sort"></i></th>
+            <th scope="col" (click)="sort('hotelName')">HotelName<i class="fa fa-sort"></i></th>
+            <th scope="col" (click)="sort('fullname')">Customer Name <i class="fa fa-sort"></i></th>
+            <th scope="col" (click)="sort('roomNumber')">Room Number<i class="fa fa-sort"></i></th>
+            <th>Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let reservation of reservationObj  | orderBy : key:reverse  |
+            paginate: { itemsPerPage: 5, currentPage: page,totalItems: totalRecords }">
+               <td>{{ reservation.id }}</td> 
+               <td>{{ reservation.hotelName }}</td> 
+               <td>{{ reservation.customer.fullname }}</td>
+               <td>{{ reservation.roomNumber }}</td>
+               <td>{{ reservation.active }}</td>
+               <td><button class="btn btn-danger"
+                mwlConfirmationPopover
+                  [popoverTitle]="popoverTitle"
+                  [popoverMessage]="popoverMessage"
+                  placement="left"
+                  (confirm)="deleteReservation(reservation.id)"
+                  (cancel)="cancelClicked = true"
+                  *ngIf="showDeleteButtonForReservation"><i class="fas fa-window-close"></i></button>
+
+                  <button class="btn btn-danger"
+                mwlConfirmationPopover
+                  [popoverTitle]="popoverTitle"
+                  [popoverMessage]="popoverMessage"
+                  placement="left"
+                  (confirm)="deleteTemporaryReservation(reservation.id)"
+                  (cancel)="cancelClicked = true"
+                  *ngIf="showDeleteButtonForTemporaryReservation"><i class="fas fa-window-close"></i></button>|
+
+                  <button class="btn btn-secondary" *ngIf="showEditButtonForReservation"  (click)="viewClicked(reservation.id)"
+                   data-toggle="modal" data-target="#editReservationDetail" >
+                    <i class="fa fa-edit"></i></button>
+                  <button class="btn btn-secondary" *ngIf="showEditButtonForTemporaryReservation"
+                   (click)="viewTempClicked(reservation.id)" data-toggle="modal" data-target="#editTempReservationDetail">
+                   <i class="fa fa-edit"></i></button>
+
+                  <button class="btn btn-success" (click)="viewClicked(reservation.id)"  *ngIf ="showViewButtonForReservation"
+                  data-toggle="modal" data-target="#viewReservationDetail"><i class="fas fa-eye"></i></button>|
+
+                 <button class="btn btn-success" (click)="viewTempClicked(reservation.id)" 
+                  *ngIf="showViewButtonForTemporaryReservation"
+                  data-toggle="modal" data-target="#viewTempReservationDetail"><i class="fas fa-eye"></i></button>|
+
+                
+
+                  <button  class="btn btn-primary" 
+                  mwlConfirmationPopover
+                  [popoverTitle]="popoverTitle2"
+                  [popoverMessage]="popoverMessage2"
+                  placement="left"
+                  (confirm)="checkOutReservation(reservation.id)" 
+                  (cancel)="cancelClicked = true"
+                  *ngIf="showCheckOutButton"><i class="fas fa-cart-arrow-down"></i></button>
+
+                  <button class="btn btn-primary" 
+                  mwlConfirmationPopover
+                  [popoverTitle]="popoverTitle1"
+                  [popoverMessage]="popoverMessage1"
+                  placement="left"
+                  (confirm)="confirmTemporaryReservation(reservation.id)" 
+                  (cancel)="cancelClicked = true"
+                  *ngIf="showSubmitButton"
+                 ><i class="fas fa-arrow-right"></i></button>
+                </td> 
+        </tr>
+        </tbody>
+    </table>
+    <div *ngIf="isReservedRoom" >
+      <pagination-controls (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+      </div>
+</div>
+<br>
+
+<!--Room detail-->
+<div class="table-responsive">
+  <table class="table table-striped table-hover" *ngIf="isNonReservedRoom">
+      <thead>
+        <tr>
+          <th scope="col" (click)="sort('id')" >#<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('hotelName')">HotelName<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('roomNumber')">Room Number<i class="fa fa-sort"></i></th>
+          <th scope="col" (click)="sort('roomType')">Room Type<i class="fa fa-sort"></i></th>
+          <th>Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let nonReserved of nonReservedRoom  | orderBy : key:reverse  |
+          paginate: { itemsPerPage: 5, currentPage: page,totalItems: totalRecords }">
+             <td>{{ nonReserved.id }}</td> 
+             <td>{{ nonReserved.hotel.hotelName }}</td> 
+             <td>{{ nonReserved.roomNumber }}</td>
+             <td>{{nonReserved.roomType}}</td>
+             <td>{{ nonReserved.active }}</td>
+             <td>
+               <button class="btn btn-success" (click)="viewNonReservedRoomClicked(nonReserved.id)"
+                data-toggle="modal" data-target="#viewNonReservedRoomModal"><i class="fas fa-eye"></i></button>|
+              </td> 
+      </tr>
+      </tbody>
+  </table>
+  <div *ngIf="isNonReservedRoom">
+    <pagination-controls (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
+    </div>
+</div>
+
+
+<!--Modal start here for edit reservation detail-->
+<div class="modal fade" id="editReservationDetail" tabindex="-1" role="dialog"
+ aria-labelledby="editReservationDetailCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editReservationDetailLongTitle">Edit Reservation Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form>
+             
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputHotelName"><strong>Hotel Name</strong></label>
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName" 
+              class="form-control" id="editHotelName" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCustomerName"><strong>Customer Name</strong></label>
+              <input type="text"[(ngModel)]="fullname" name="fullname" 
+              class="form-control" id="editCustomerName" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputCheckInDate"><strong>Check In Date</strong></label>
+              <input type="text"[(ngModel)]= "checkInDate" name="checkInDate"
+               class="form-control" id="editCheckInDate" >
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCheckOutDate"><strong>Check Out Date</strong></label>
+              <input type="text"[(ngModel)]="checkOutDate" name="checkOutDate" 
+              class="form-control" id="editCheckOutDate" >
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputNoOfGuest"><strong>No. Of Guest</strong></label>
+              <input type="text"[(ngModel)]= "noOfGuest" name="noOfGuest" 
+              class="form-control" id="editNoOfGuest" >
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputRoomNumber"><strong>Room Number</strong></label>
+              <input type="text"[(ngModel)]="roomNumber" name="roomNumber" 
+              class="form-control" id="editRoomNumber" readonly>
+            </div>
+            </div>
+          
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" (click)="editReservation(resId)" class="btn btn-primary"
+             data-dismiss="modal">Edit</button>
+           
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal start here for edit temporary reservation detail-->
+<div class="modal fade" id="editTempReservationDetail" tabindex="-1" role="dialog"
+ aria-labelledby="editTempReservationDetailCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTempReservationDetailLongTitle">Edit Temporary Reservation Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form>
+             
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputHotelName"><strong>Hotel Name</strong></label>
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName" 
+              class="form-control" id="editHotelName1" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCustomerName"><strong>Customer Name</strong></label>
+              <input type="text"[(ngModel)]="fullname" name="fullname"
+               class="form-control" id="editCustomerName1" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputReservationTime"><strong>Reservation Time</strong></label>
+              <input type="text"[(ngModel)]= "reservationTime" name="reservationTime"
+               class="form-control" id="editReservationTime" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputRoomNumber"><strong>Room Number</strong></label>
+              <input type="text"[(ngModel)]="roomNumber" name="roomNumber" 
+              class="form-control" id="editRoomNumber1" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputCheckInDate"><strong>Check In Date</strong></label>
+              <input type="text"[(ngModel)]= "checkInDate" name="checkInDate"
+               class="form-control" id="editCheckInDate1" >
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCheckOutDate"><strong>Check Out Date</strong></label>
+              <input type="text"[(ngModel)]="checkOutDate" name="checkOutDate"
+               class="form-control" id="editCheckOutDate1" >
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputNoOfGuest"><strong>No. Of Guest</strong></label>
+              <input type="text"[(ngModel)]= "noOfGuest" name="noOfGuest"
+               class="form-control" id="editNoOfGuest1" >
+            </div>
+            </div>
+          
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" (click)="editTemporaryReservation(resId)" class="btn btn-primary"
+             data-dismiss="modal">Edit</button>
+           
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Modal start here for view reservation detail-->
+<div class="modal fade" id="viewReservationDetail" tabindex="-1" role="dialog"
+ aria-labelledby="viewReservationDetailCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewReservationDetailLongTitle">View Reservation Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form>
+             
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputHotelName"><strong>Hotel Name</strong></label>
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName"
+               class="form-control" id="inputHotelName" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCustomerName"><strong>Customer Name</strong></label>
+              <input type="text"[(ngModel)]="fullname" name="fullname"
+               class="form-control" id="inputCustomerName" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputCheckInDate"><strong>Check In Date</strong></label>
+              <input type="text"[(ngModel)]= "checkInDate" name="checkInDate" 
+              class="form-control" id="inputCheckInDate" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCheckOutDate"><strong>Check Out Date</strong></label>
+              <input type="text"[(ngModel)]="checkOutDate" name="checkOutDate" 
+              class="form-control" id="inputCheckOutDate" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputNoOfGuest"><strong>No. Of Guest</strong></label>
+              <input type="text"[(ngModel)]= "noOfGuest" name="noOfGuest"
+               class="form-control" id="inputnoOfGuest" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputRoomNumber"><strong>Room Number</strong></label>
+              <input type="text"[(ngModel)]="roomNumber" name="roomNumber"
+               class="form-control" id="inputRoomNumber" readonly>
+            </div>
+            </div>
+          
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+           
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal start here for view temporary reservation detail-->
+<div class="modal fade" id="viewTempReservationDetail" tabindex="-1" role="dialog"
+ aria-labelledby="viewTempReservationDetailCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewTempReservationDetailLongTitle">View Temporary Reservation Detail</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form>
+             
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputHotelName"><strong>Hotel Name</strong></label>
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName" 
+              class="form-control" id="inputHotelName1" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCustomerName"><strong>Customer Name</strong></label>
+              <input type="text"[(ngModel)]="fullname" name="fullname"
+               class="form-control" id="inputCustomerName1" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputReservationTime"><strong>Reservation Time</strong></label>
+              <input type="text"[(ngModel)]= "reservationTime" name="reservationTime" 
+              class="form-control" id="inputReservationTime" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputRoomNumber"><strong>Room Number</strong></label>
+              <input type="text"[(ngModel)]="roomNumber" name="roomNumber" 
+              class="form-control" id="inputRoomNumber1" readonly>
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputCheckInDate"><strong>Check In Date</strong></label>
+              <input type="text"[(ngModel)]= "checkInDate" name="checkInDate"
+               class="form-control" id="inputCheckInDate1" readonly>
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCheckOutDate"><strong>Check Out Date</strong></label>
+              <input type="text"[(ngModel)]="checkOutDate" name="checkOutDate"
+               class="form-control" id="inputCheckOutDate1" readonly >
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputNoOfGuest"><strong>No. Of Guest</strong></label>
+              <input type="text"[(ngModel)]= "noOfGuest" name="noOfGuest"
+               class="form-control" id="inputNoOfGuest1" readonly>
+            </div>
+            </div>
+          
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+           
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Modal start here for reserved temporary reservation-->
+<div class="modal fade" id="reserveRoom" tabindex="-1" role="dialog"
+ aria-labelledby="reserveRoomCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="reserveRoomLongTitle"><strong>New Reservation</strong></h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form>
+
+            <div class="form-group">
+              <div class="container" style="width: 18 rem">
+                <label style="text-align: center;"><strong>HotelName</strong></label>
+                <select (change)="changeHotelnameHandler($event)" class="form-control">
+                  <option selected>--select--</option>
+                  <option
+                    *ngFor="let hotel of hotelDetail"
+                    value="{{hotel.id}}"
+                  >
+                    {{ hotel.hotelName }}
+                  </option>
+                  >
+                </select>
+              </div>
+             </div>
+
+             <div class="form-group">
+              <div class="container" style="width: 18 rem">
+                <label style="text-align: center;"><strong>Room Number</strong></label>
+                <select (change)="changeRoomNumberHandler($event)" class="form-control">
+                  <option selected>--select--</option>
+                  <option
+                    *ngFor="let room of roomDetail "
+                    value="{{room.id}}"
+                  >
+                    {{ room.roomNumber }}
+                  </option>
+                  >
+                </select>
+              </div>
+             </div>
+
+             <div class="form-group">
+              <div class="container" style="width: 18 rem">
+                <label style="text-align: center;"><strong>Customer Name</strong></label>
+                <select (change)="changeCustomerNameHandler($event)" class="form-control">
+                  <option selected>--select--</option>
+                  <option
+                    *ngFor="let cus of customerDetail "
+                    value="{{cus.id}}"
+                  >
+                    {{ cus.fullname }}
+                  </option>
+                  >
+                </select>
+              </div>
+             </div>
+        
+            <div class="form-row">
+              <!-- <div class="form-group col-md-6">
+              <label for="inputReservationTime"><strong>Reservation Time</strong></label>
+              <input type="date"[(ngModel)]= "reservationTime" name="reservationTime" value="reservationTime"
+               class="form-control" id="addReservationTime" >
+            </div> -->
+         
+            <div class="form-group col-md-6">
+              <label for="inputNoOfGuest"><strong>No. Of Guest</strong></label>
+              <input type="text"[(ngModel)]= "noOfGuest" name="noOfGuest"
+               class="form-control" id="addNoOfGuest1" >
+            </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputCheckInDate"><strong>Check In Date</strong></label>
+              <input type="date"[(ngModel)]= "checkInDate" name="checkInDate"
+               class="form-control" id="addCheckInDate1" >
+            </div>
+         
+            <div class="form-group col-md-6">
+              <label for="inputCheckOutDate"><strong>Check Out Date</strong></label>
+              <input type="date"[(ngModel)]="checkOutDate" name="checkOutDate"
+               class="form-control" id="addCheckOutDate1" >
+            </div>
+            </div>
+
+            
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button"  class="btn btn-primary" (click)="roomReserved()"
+             data-dismiss="modal">Reserved</button>
+           
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Modal start here for view room detail-->
+<div class="modal fade" id="viewNonReservedRoomModal" tabindex="-1" role="dialog" aria-labelledby="viewNonReservedRoomModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="viewNonReservedRoomModalLongTitle">View Room</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+          <!-- Form start here -->
+          <form>
+             
+            <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputHotelName">HotelName</label>
+              <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName" readonly>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputRoomType">Room type</label>
+              <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType" readonly>
+              </div>
+            </div>
+
+            <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="inputRoomNumber">Room Number</label>
+              <input type="text"[(ngModel)]="roomNumber" name="roomNumber" class="form-control" id="inputRoomNumber" readonly>
+            </div>
+            </div>
+
+          <!-- <div class="form-group">
+            <label for="inputRoomPhoto">Room Photo</label>
+            <input type="file" name="roomPhoto" class="form-control" id="inputRoomPhoto" >
+          </div> -->
+
+           <div class="form-group">
+            <label for="inputDescription">Description</label>
+            <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription" readonly>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+           
+          </div>
+
+          </form>
+
+      </div>
+    </div>
+  </div>
+</div>

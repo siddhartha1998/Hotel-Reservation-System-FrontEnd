@@ -32,7 +32,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="editProfileModalLongTitle">Edit Profile</h5>
+              <h3 class="modal-title" id="editProfileModalLongTitle">Edit Profile</h3>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -40,14 +40,7 @@
             <div class="modal-body">
     
              <!-- Form start here -->
-             <form 
-                
-             name="form"
-             #f="ngForm"
-             (ngSubmit)="f.form.valid && onSubmit()"
-            
-             novalidate
-             >
+             <form >
 
              <div class="container  jumbotron  d-flex justify-content-center" >
    
@@ -55,23 +48,8 @@
                                 <img alt="" [src]="retrievedImage"  class="profileImage">
                                 
                             </div>
-                            <!-- <div>
-                                <button (click)="editProfilePic()" class="btn btn-secondary" style=" margin-right: 10px; margin-top: 10px;">Edit</button>
-                                <button (click)="removeProfilePic(id)" class="btn btn-danger" style=" margin-top: 10px;" >Remove</button>
-                            </div> -->
-                            
-                            <!-- <div class="info">
-                                <div class="title">
-                                    <h1 >{{currentUser.username}}</h1>  
-                                </div>
-                                <div >{{currentUser.email}}</div><br>
-                                <div><b>{{currentUser.roles}}</b></div>
-                            </div> -->
-                    
                         
-                    <!-- </div> -->
-               
-            </div>
+              </div>
     
   
                  <div class="modal-footer">
@@ -90,12 +68,12 @@
       </div>
     <br>
 
-     <!-- Modal -->
+     <!-- Modal for add profile picture -->
      <div class="modal fade" id="addProfileModal" tabindex="-1" role="dialog" aria-labelledby="addProfileModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="addProfileModalLongTitle">Add Profile Picture</h5>
+              <h3 class="modal-title" id="addProfileModalLongTitle">Add Profile Picture</h3>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -103,13 +81,7 @@
             <div class="modal-body">
     
              <!-- Form start here -->
-             <form 
-                
-             name="form"
-             #f="ngForm"
-             (ngSubmit)="f.form.valid && onSubmit()"
-             novalidate
-             >      
+             <form   >      
                 <div class="form-group">
                   <label for="inputProfilePicture">Profile Picture</label>
                   <input type="file" class="form-control" name="file" id="profile" (change)="selectFileHandler($event)" required/>
@@ -135,7 +107,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="addProfileModalLongTitle">Add Profile Picture</h5>
+            <h3 class="modal-title" id="addProfileModalLongTitle">Update Profile Picture</h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>

@@ -1,0 +1,61 @@
+<button class="btn btn-primary" data-toggle="modal" data-target="#viewRoomPicture"  *ngIf="showRoomImage" 
+style="margin-top: 8px; margin-bottom: 10px;">view picture detail</button>
+
+<div class="row " *ngIf="showRoomImage" >
+<div class="card text-center" *ngFor="let img of collectionOfRoomImages"style="padding: 10px; margin-left:90px">
+        
+    <img   alt="Loading..." [src]=" img"  style="width: 400px;">
+        </div>
+    </div>
+        <div class="card"  *ngIf="!showRoomImage" >
+                <span>No images for this room</span>
+        </div>
+      
+ <!-- Modal -->
+ <div class="modal fade" id="viewRoomPicture" tabindex="-1" role="dialog" aria-labelledby="viewRoomPictureCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="viewRoomPictureLongTitle">View Room Picture</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+     
+
+<!--Room detail-->
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th scope="col"  >#</th>
+            <th scope="col" >fileName</th>
+            <th scope="col" >uploaded by</th>
+            <th scope="col" >uploaded Time</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let roomPic of roomPictureDetail">
+               <td>{{ roomPic.id }}</td> 
+               <td>{{ roomPic.fileName }}</td> 
+               <td>{{ roomPic.uploadedBy }}</td>
+               <td>{{ roomPic.uploadedTime }}</td>
+               <td><button class="btn btn-danger" (click)="deleteRoomPicture(roomPic.id)">
+                 <i class="fa fa-trash"></i></button>|
+  
+                  </td> 
+        </tr>
+        </tbody>
+    </table>
+    <div >      
+             
+    
+        </div>
+    
+      </div>
+    </div>
+  </div>
+<br>

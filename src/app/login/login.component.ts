@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   username:any;
   response:any;
+  isLoading= false;
 
   constructor(private authService: AuthService, private tokenStorage: TokenStorageService, private router: Router) { }
 
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
+    this.isLoading = true;
     this.authService.login(this.form).subscribe(
       data => {
        // console.log(data);

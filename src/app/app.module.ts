@@ -29,6 +29,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ConfirmationPopoverModule } from 'angular-confirmation-popover';
 import { CustomerComponent } from './customer/customer.component';
 import { CommonModule } from '@angular/common';
+import { RoomPictureComponent } from './room-picture/room-picture.component';
+import { HotelPictureComponent } from './hotel-picture/hotel-picture.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +47,9 @@ import { CommonModule } from '@angular/common';
     OtpComponent,
     ProfileComponent,
     ForgotPasswordComponent,
-    CustomerComponent
+    CustomerComponent,
+    RoomPictureComponent,
+    HotelPictureComponent
     
   ],
   imports: [
