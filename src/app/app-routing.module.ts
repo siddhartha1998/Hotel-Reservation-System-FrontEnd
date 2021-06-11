@@ -16,12 +16,14 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { CustomerComponent } from './customer/customer.component';
 import { RoomPictureComponent } from './room-picture/room-picture.component';
 import { HotelPictureComponent } from './hotel-picture/hotel-picture.component';
+import { AuthGuard } from './_services/authGuard';
+import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
+import { RoomDetailComponent } from './room-detail/room-detail.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full'},
   {path:'homepage',component:HomepageComponent},
-  {path:'hotel',component:HotelComponent},
   {path:'hotel/:id',component:HotelComponent},
   {path:'hotel1/:id',component:HotelComponent},
   {path:'customer/:id',component:CustomerComponent},
@@ -29,6 +31,8 @@ const routes: Routes = [
   {path:'room/:id',component:RoomComponent},
   {path:'room1/:id',component:RoomComponent},
   {path:'room2/:id',component:RoomComponent},
+  {path:'room3/:id',component:RoomComponent},
+  {path:'room4/:id',component:RoomComponent},
   {path:'reservation1/:id',component:ReservationComponent},
   {path:'reservation2/:id',component:ReservationComponent},
   {path:'reservation3/:id',component:ReservationComponent},
@@ -41,7 +45,10 @@ const routes: Routes = [
   { path:'homepage2/:id',component:HomepageComponent},
   { path:'homepage3/:id',component:HomepageComponent},
   { path:'room-picture/:id', component:RoomPictureComponent},
+  { path:'room-detail/:id', component:RoomDetailComponent},
+  { path:'room-detail1/:id', component:RoomDetailComponent},
   { path:'hotel-picture/:id', component:HotelPictureComponent},
+  { path:'hotel-detail/:id', component:HotelDetailComponent},
   { path:'profile',component:ProfileComponent},
   {path: 'forgot-password', component:ForgotPasswordComponent},
   { path:'otp',component:OtpComponent}

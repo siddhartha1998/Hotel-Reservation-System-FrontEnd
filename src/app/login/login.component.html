@@ -1,11 +1,11 @@
-<div class="container-fluid ">
+<div class="container-fluid " *ngIf="!(isGenerateOtp)">
   <div class="row justify-content-center align-items-center" >
       <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 h-auto">
 
       <label style="text-align: center; margin-left: 50px; color: rgb(36, 36, 116);"><b>Application Login</b> </label>
       <br>
       <form
-        *ngIf="!isLoggedIn"
+        *ngIf="!(isLoggedIn) "
         name="form"
         #f="ngForm"
         (ngSubmit)="f.form.valid && onSubmit()"
@@ -84,9 +84,11 @@
 </div>
 
 <form>
+  <div class="container" *ngIf="isGenerateOtp" >
   <div class="form-group text-align center" >
     <label for="partitioned">Enter OTP For Verify your email</label><br>
-    <input type="text"  class="form-control" id="partitioned" maxlength="6">
+    <input type="text" [(ngModel)]="otpnum"  name="otpnum" class="form-control" id="partitioned" maxlength="6">
   </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
+  <button (click)="validateOtp()" type="submit" class="btn btn-primary">Submit</button>
+</div>
 </form>

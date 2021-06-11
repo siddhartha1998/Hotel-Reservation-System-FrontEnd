@@ -64,9 +64,10 @@ export class RoomComponent implements OnInit {
   ngOnInit(): void {
 
     this.currentUser=this.tokenStorageService.getUser();
- this.value = this.activatedRoute.snapshot.params.id;
 
- if(this.value=="all-room"){
+  this.value = this.activatedRoute.snapshot.params.id;
+
+  if(this.value=="all-room"){
     this.viewRoomDetail();
 
  }
@@ -76,6 +77,7 @@ export class RoomComponent implements OnInit {
  if(this.value=="inactive-room"){
    this.getInactiveRoom();
  }
+
   }
 
   onSubmit(){
@@ -365,68 +367,5 @@ this.userService.editRoomById(id,this.roomNumber,this.roomType,this.description)
    );
    
     }
-
-    // getPhotoOfRoom(id:any){
-    //   this.userService.getPictureOfRoom(id).subscribe(
-    //     res=>{
-    //       console.log(res);
-
-    //       for(let i =0; i< res.length; i++){
-    //         this.uploadDir = res[i].uploadDir;
-    //         if(this.uploadDir!=null){
-    //         this.userService.loadRoomPicture(this.uploadDir).subscribe(
-    //          (res:Blob)=>{
-    //             //console.log(res.type);
-               
-    //           //  this.getImageFromBlob(res);
-    //           let reader=new FileReader();
-    //           reader.addEventListener("load",()=>{
-    //             this.retrievedImage=reader.result;
-    //             this.collectionOfRoomImages[i].images = this.retrievedImage;
-    //             this.showRoomImage=true;
-    //           },
-    //           false);
-    //           if(res){
-    //             reader.readAsDataURL(res);
-    //           }
-              
-    //           },
-    //           err=>{
-    //             console.log(err);
-    //           }
-    //         );
-    //           }
-    //       }
-    //       // this.uploadDir=res.uploadDir;
-    //       // this.id=res.id;
-    //     //   if(this.uploadDir==null){
-    //     // this.showRoomImage=false;
-    //     //   }else{
-         
-          
-    //     },
-    //     err=>{
-    //       this.retrievedImage = null;
-    //       console.log(err);
-    //       this.showRoomImage=false;
-    //     }
-    //   );
-    //   }
-      
-      
-    //   //photo received method
-    //   getImageFromBlob(image:Blob){
-    //   let reader=new FileReader();
-    //   reader.addEventListener("load",()=>{
-    //     this.retrievedImage=reader.result;
-    //     this.showRoomImage=true;
-    //   },
-    //   false);
-    //   if(image){
-    //     reader.readAsDataURL(image);
-    //   }
-    //   }
-      
-  
 
 }

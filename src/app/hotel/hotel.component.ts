@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
+import { HotelService } from '../_services/hotel.service';
 import { LocationService } from '../_services/location.service';
+import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
 import { Hotel } from './hotel.model';
 
@@ -26,8 +28,10 @@ export class HotelComponent implements OnInit {
   hotelDetail:any;
   isHotelDetail:any;
   isInactiveHotel:any;
+  isMyHotel:any;
   inactivehotelDetail:any;
   editHotelDetail:any;
+  myhotelDetail:any;
 
   registeredHotel:Array<Hotel> = new Array<Hotel>();
  
@@ -62,17 +66,20 @@ export class HotelComponent implements OnInit {
   constructor(private userService : UserService,
                       private activatedRouter  :ActivatedRoute,
                       private snackBar : MatSnackBar,
-                      private locationService : LocationService
+                      private locationService : LocationService,
+                      private hotelService : HotelService,
+                      private tokenStorage : TokenStorageService
               ) { }
 
   ngOnInit(): void {
-
+    this.currentUser=this.tokenStorage.getUser();
     this.value=this.activatedRouter.snapshot.params.id;
     this.locationService.getPosition().then(pos=>
       {
          console.log(`Positon: ${pos.lng} ${pos.lat}`);
       });
     // console.log(this.value);
+    if(this.currentUser.roles.includes('ROLE_ADMIN')){
     if(this.value == "activeHotel"){
       
         this.viewActiveHotel();
@@ -82,8 +89,12 @@ export class HotelComponent implements OnInit {
 
         this.viewInactiveHotel();
     }
-
-    
+  }
+   if(this.currentUser.roles.includes('ROLE_HOTEL')){
+     if(this.value=="myHotel"){
+    // this.getHotel();
+   } 
+  }
   } // end ngonit
 
   onSubmit(): void {
@@ -130,6 +141,7 @@ search(){
             this.hotelDetail = res;
             this.isHotelDetail = true;
             this.isInactiveHotel=false;
+            this.isMyHotel=false;
             this.showAddHotelButton=true;
           },
           (err) => {
@@ -166,6 +178,7 @@ search(){
          this.inactivehotelDetail = res;
         this.isInactiveHotel = true;
         this.isHotelDetail = false;
+        this.isMyHotel=false;
        this.showAddHotelButton=false;
 
       },
@@ -376,7 +389,7 @@ search(){
      );
      
       }
-  
+
 
     }
   

@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../_services/user.service';
 import { HotelPicture } from './hotel-picture.model';
+import {Location} from '@angular/common';
 
 @Component({
   selector: 'app-hotel-picture',
@@ -23,7 +24,8 @@ export class HotelPictureComponent implements OnInit {
 
   constructor( private activatedRouter : ActivatedRoute,
                        private userService : UserService,
-                       private snackBar : MatSnackBar )
+                       private snackBar : MatSnackBar,
+                       private location : Location )
    { 
     this.collectionOfHotelImages = new Array<HotelPicture>();
   }
@@ -77,6 +79,10 @@ export class HotelPictureComponent implements OnInit {
 
   refresh(){
     window.location.reload();
+  }
+
+  backClicked(){
+    this.location.back();
   }
 
   deleteHotelPicture(id:any){

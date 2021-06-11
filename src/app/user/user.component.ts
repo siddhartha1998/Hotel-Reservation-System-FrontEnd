@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserService } from '../_services/user.service';
 
 @Component({
@@ -12,6 +13,7 @@ export class UserComponent implements OnInit {
   userId:any;
   username:any;
   password:any;
+  roles: Set<string> = new Set<string>();
   role:any;
   email:any;
   viewUser:any;
@@ -19,9 +21,9 @@ export class UserComponent implements OnInit {
 
   isRegisteredUser:boolean=false;
 
-  constructor( private userService : UserService
-
-  ) { }
+  constructor( private userService : UserService,
+                      private snackBar : MatSnackBar)      
+                       { }
 
   ngOnInit(): void {
     this.viewRegisteredHotel();
@@ -69,6 +71,28 @@ UserClicked(id:any){
      console.log(err);
     }
   );
+}
+
+onSubmit() {
+  // console.log('i am from on submit ' + this.roles);
+  this.userService.addHotel(this.username, this.email, this.password, this.roles)
+    .subscribe(
+      (res) => {
+        this.snackBar.open(res.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+        });
+        this.reloadPage();
+      },
+      (err) => {
+        console.log(err);
+      }
+    );
+}
+reloadPage(): void {
+  window.location.reload();
 }
 
 

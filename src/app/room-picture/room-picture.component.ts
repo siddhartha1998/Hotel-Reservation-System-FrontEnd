@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../_services/user.service';
 import { RoomPicture } from './roomPicture.model';
+import {Location} from '@angular/common';
 
 
 @Component({
@@ -26,7 +27,8 @@ export class RoomPictureComponent implements OnInit {
 
   constructor(private activatedRouter:ActivatedRoute,
     private userService:UserService,
-    private snackBar : MatSnackBar
+    private snackBar : MatSnackBar,
+    private location :  Location
     ) {
       this.collectionOfRoomImages = new Array<RoomPicture>();
      }
@@ -82,6 +84,9 @@ export class RoomPictureComponent implements OnInit {
   refresh(){
     window.location.reload();
   }
+  backClicked(){
+      this.location.back();
+      }
 
   deleteRoomPicture(id:any){
     this.userService.deleteRoomPic(id).subscribe(

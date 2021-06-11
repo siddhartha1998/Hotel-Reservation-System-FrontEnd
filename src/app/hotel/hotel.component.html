@@ -219,6 +219,54 @@ data-toggle="modal" data-target="#addHotelDocument">
   </div>
 <br>
 
+ <!--my hotel-->
+ <!-- <div class="table-responsive">
+  <table class="table table-striped" [hidden]="!isMyHotel">
+    <thead>
+      <tr>
+        <th scope="col" (click)="sort('hotelId')">#<i class="fa fa-sort"></i></th>
+        <th scope="col" (click)="sort('hotelName')">HotelName<i class="fa fa-sort"></i></th>
+        <th scope="col" (click)="sort('username')">Hotel Username<i class="fa fa-sort"></i></th>
+        <th scope="col" (click)="sort('address')">Address<i class="fa fa-sort"></i></th>
+        <th>Active Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let myHotel of myhotelDetail   | orderBy : key:reverse ">
+        <td>{{ myHotel.id }}</td>
+        <td>{{ myHotel.hotelName }}</td>
+        <td>{{ myHotel.hotelUsername }}</td>
+        <td>{{ myHotel.hotelAddress }}</td>
+        <td>{{ myHotel.active }}</td>
+         
+          <td><button class="btn btn-danger"
+            mwlConfirmationPopover
+              [popoverTitle]="popoverTitle"
+              [popoverMessage]="popoverMessage"
+              placement="left"
+              (confirm)="deleteHotel(myHotel.id)"
+              (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button>|
+
+              <button (click)="HotelClicked(myHotel.id)" class="btn btn-secondary" 
+               data-toggle="modal" data-target="#editHotelModal"><i class="fas fa-edit"></i></button>|
+
+              <button  (click)="HotelClicked(myHotel.id)" class="btn btn-success"
+                data-toggle="modal" data-target="#viewHotelModal"><i class="fas fa-eye"></i></button>|
+
+                <button  class="btn btn-primary"  (click)="HotelClicked(myHotel.id)"
+                data-toggle="modal" data-target="#addHotelPictureModal"><i class="fas fa-plus"></i></button>|
+              
+               <a   class="btn btn-primary"  [routerLink]="['/hotel-picture', myHotel.id]">  
+                <i class="fas fa-eye"></i></a>
+            </td>
+
+    </tr>
+  
+</tbody>
+</table>
+</div> -->
+
 <!--Modal start here for edit hotel detail-->
 <div class="modal fade" id="editHotelModal" tabindex="-1" role="dialog" 
 aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
@@ -412,7 +460,7 @@ aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
     </div>
   <br>
 
-    <!-- Modal for add  hotel picture -->
+    <!-- Modal for add  hotel Document -->
     <div class="modal fade" id="addHotelDocument" tabindex="-1" role="dialog" aria-labelledby="addHotelDocumentCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">

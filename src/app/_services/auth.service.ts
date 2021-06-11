@@ -38,4 +38,16 @@ export class AuthService {
       // address:user.address
     }, httpOptions);
   }
+
+  validateOtp(username: any, otpnum: any): Observable<any> {
+    return this.http.post(
+      environment.apiUrls +
+        'auth/validateOtp/' +
+        username +
+        '?otpnum=' +
+        otpnum,
+      { responseType: 'json' }
+    );
+  }
+
 }

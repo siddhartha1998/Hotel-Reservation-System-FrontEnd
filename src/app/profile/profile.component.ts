@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TokenStorageService } from '../_services/token-storage.service';
 import { UserService } from '../_services/user.service';
+import { HotelService } from '../_services/hotel.service';
 
 
 @Component({
@@ -20,22 +21,42 @@ export class ProfileComponent implements OnInit {
   selectedFile:any;
   isSelectedFile:any;
   progress:any;
-
+  roles:any
   username:any;
   email:any;
   document:any;
-  
+  hotelId:any;
+  hotelName:any;
+  hotelUsername:any;
+  hotelAddress:any;
+  city:any;
+  hotelOwner:any;
+  phone:any;
+  panNumber:any;
+  latitude:any;
+  longitude:any;
+  description:any;
 
+  buttonForHotel:boolean=false;
 
   constructor( 
     private tokenStorageService: TokenStorageService,
     private userService: UserService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private hotelService : HotelService
   ) { }
 
   ngOnInit(): void {
 
 this.currentUser=this.tokenStorageService.getUser();
+this.roles=this.currentUser.roles;
+this.hotelId=this.currentUser.id;
+if(this.roles.includes('ROLE_ADMIN')){
+  this.buttonForHotel=false;
+}
+if(this.roles.includes('ROLE_HOTEL')){
+  this.buttonForHotel=true;
+}
 this.getPhotoOfAdmin(this.currentUser.id);
 
   }
@@ -190,5 +211,69 @@ uploadProfilePicture(){
  );
  
   }
+
+
+  // //edit active Hotel
+  // editHotel(id:any){
+  
+  //   this.hotelService.editHotelDetail(id,this.hotelName,this.hotelOwner,this.city,this.hotelAddress,
+  //     this.panNumber,this.document,this.phone,this.description).subscribe(
+  //     res =>{
+        
+  //       this.snackBar.open(res.message, 'Dismiss', {
+  //        duration: 4000,
+  //        verticalPosition: 'bottom',
+  //        horizontalPosition: 'right',
+  //        panelClass: ['success-snackBar'],
+ 
+  //      });
+  //      this.refresh();
+  //     },
+  //     err =>{
+  //       console.log(err);
+  //     }
+  //   )
+  //  }
+
+  //  selectHotelPictureHandler(event:any){
+  //   this.selectedFile=event.target.files[0];
+  //   this.isSelectedFile=true;
+  // }
+
+  // uploadHotelPicture(id:any){
+  //   // this.isLoading = true;
+  //  const uploadProfileImage:FormData = new FormData();
+  //  uploadProfileImage.append('hotelPic',this.selectedFile, this.selectedFile.name);
+  //  this.hotelService.addHotelPicture(id,uploadProfileImage).subscribe(
+  //  (res:any)=>{
+  
+  //   this.snackBar.open(res.message, 'Dismiss', {
+  //     duration: 4000,
+  //     verticalPosition: 'bottom',
+  //     horizontalPosition: 'right',
+  //     panelClass: ['success-snackBar'],
+  //   });
+  //   this.refresh();
+  // //  this.isLoading = false;
+  
+  //  },
+  //  err =>{
+  //  this.progress = 0;
+  //  this.snackBar.open(err.body.message,'Dismiss',{
+  //  duration: 4000,
+  //  verticalPosition: 'bottom',
+  //  horizontalPosition: 'right',
+  //  panelClass:['red-snackBar'],
+  //  });
+   
+  //   setTimeout(()=>{
+  //  window.location.reload();
+  //  },5000)
+  //  }
+  //  );
+   
+  //   }
+
+
 
 }

@@ -18,6 +18,9 @@ export class AppComponent implements OnInit {
   user:any;
   uploadDir:any;
   profilePicture:any;
+  showForAdmin:boolean=false;
+  showUserForAdmin:boolean=false;
+  showRoomForAdmin:boolean=false;
 
   constructor(
     private tokenStorageService : TokenStorageService, 
@@ -26,6 +29,7 @@ export class AppComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
+    
    if(this.tokenStorageService.getToken()!= null){
      this.isLoggedIn = true;
 
@@ -43,9 +47,19 @@ export class AppComponent implements OnInit {
       this.roles = this.user.roles;
      
       //console.log(this.roles);
-      if(this.roles.includes('ROLE_ADMIN')){
+      if(this.roles.includes('ROLE_ADMIN')||this.roles.includes('ROLE_HOTEL')){
         this.showAdminBoard = true;
-   
+        
+      }
+      if(this.roles.includes('ROLE_ADMIN')){
+        this.showForAdmin=true;
+        this.showUserForAdmin=true;
+        this.showRoomForAdmin=true;
+      }
+      if(this.roles.includes('ROLE_HOTEL')){
+        this.showForAdmin=false;
+        this.showUserForAdmin=false;
+        this.showRoomForAdmin=false;
       }
      
       this.username = this.user.username;

@@ -31,6 +31,9 @@ import { CustomerComponent } from './customer/customer.component';
 import { CommonModule } from '@angular/common';
 import { RoomPictureComponent } from './room-picture/room-picture.component';
 import { HotelPictureComponent } from './hotel-picture/hotel-picture.component';
+import { AuthGuard } from './_services/authGuard';
+import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
+import { RoomDetailComponent } from './room-detail/room-detail.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +52,9 @@ import { HotelPictureComponent } from './hotel-picture/hotel-picture.component';
     ForgotPasswordComponent,
     CustomerComponent,
     RoomPictureComponent,
-    HotelPictureComponent
+    HotelPictureComponent,
+    HotelDetailComponent,
+    RoomDetailComponent
     
   ],
   imports: [
@@ -70,7 +75,7 @@ confirmButtonType: 'danger', // set defaults here
 }),
   ],
 
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

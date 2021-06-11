@@ -46,9 +46,9 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center"routerLink="/homepage">
           <div class="sidebar-brand-icon">
-            <i class="fas fa-hotel"></i>
+           <img src="../assets/hotelIcon1.png" style="width: 140px; margin-top: 5px; margin-left: -100px;">
           </div>
-          <div class="sidebar-brand-text mx-3">Khalti <sup>Hotel</sup></div>
+          <!-- <div class="sidebar-brand-text mx-3">Khalti <sup>Hotel</sup></div> -->
       </a>
 
       <!-- Divider -->
@@ -65,7 +65,7 @@
       <hr class="sidebar-divider">
 
      <!--User -->
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="showUserForAdmin">
         <a class="nav-link collapsed"  data-toggle="collapse" data-target="#collapseOne"
             aria-expanded="true" aria-controls="collapseOne" style="cursor: pointer;">
             <i class="fas fa-user"></i>
@@ -82,7 +82,7 @@
     </li>
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="showForAdmin">
           <a class="nav-link collapsed"  data-toggle="collapse" data-target="#collapseTwo"
               aria-expanded="true" aria-controls="collapseTwo" style="cursor: pointer;">
               <i class="fas fa-hotel"></i>
@@ -91,8 +91,9 @@
           <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
               <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Custom Hotel:</h6>
-                  <a class="collapse-item" routerLink="/hotel/activeHotel">Active Hotel</a>
-                  <a class="collapse-item"routerLink="/hotel1/inactiveHotel">Inactive Hotel</a>
+                  <a class="collapse-item" routerLink="/hotel/activeHotel" >Active Hotel</a>
+                  <a class="collapse-item"routerLink="/hotel1/inactiveHotel" >Inactive Hotel</a>
+                 
               </div>
           </div>
       </li>
@@ -109,8 +110,10 @@
               <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Custom Room:</h6>
                  <!-- <a class="collapse-item" routerLink="/room/all-room">All Room</a>  -->
-                 <a class="collapse-item" routerLink="/room2/active-room">Active Room</a>
-                 <a class="collapse-item" routerLink="/room1/inactive-room">Inactive Room</a>
+                 <a class="collapse-item" routerLink="/room2/active-room" *ngIf="showRoomForAdmin">Active Room</a>
+                 <a class="collapse-item" routerLink="/room1/inactive-room" *ngIf="showRoomForAdmin">Inactive Room</a>
+                 <a class="collapse-item" routerLink="/room-detail/myActive-room" *ngIf="!showRoomForAdmin">Active Room</a>
+                 <a class="collapse-item" routerLink="/room-detail/myInactive-room" *ngIf="!showRoomForAdmin">Inactive Room</a>
                 
                   
                   <!-- <a class="collapse-item" routerLink="/room">Single-bed room</a>

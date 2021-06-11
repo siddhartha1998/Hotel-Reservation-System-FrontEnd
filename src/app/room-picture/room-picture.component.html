@@ -10,6 +10,7 @@ style="margin-top: 8px; margin-bottom: 10px;">view picture detail</button>
         <div class="card"  *ngIf="!showRoomImage" >
                 <span>No images for this room</span>
         </div>
+        <a class="btn btn-secondary" (click)="backClicked()"  style="margin-top: 8px;"><i class="fas fa-hand-point-left" ></i>Back</a>
       
  <!-- Modal -->
  <div class="modal fade" id="viewRoomPicture" tabindex="-1" role="dialog" aria-labelledby="viewRoomPictureCenterTitle" aria-hidden="true">
