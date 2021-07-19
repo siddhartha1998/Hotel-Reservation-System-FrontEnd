@@ -51,13 +51,16 @@ export class HotelComponent implements OnInit {
   status:any;
   latitude:any;
   longitude:any;
-
+  amenities:any;
   showAddHotelButton:boolean=false;
 
   selectedFile:any;
   isSelectedFile:boolean=false;
   progress:any;
   currentUser:any;
+  hotelDocumentDetail:any;
+  uploadDir:any;
+  retrievedDocument:any;
 
   popoverTitle:string="Are you sure you want to delete?";
   popoverMessage:string="You can not undo this operation after you confirm to delete.";
@@ -76,7 +79,12 @@ export class HotelComponent implements OnInit {
     this.value=this.activatedRouter.snapshot.params.id;
     this.locationService.getPosition().then(pos=>
       {
-         console.log(`Positon: ${pos.lng} ${pos.lat}`);
+        // `Positon: ${pos.lng} ${pos.lat}`
+        this.longitude=`${pos.lng}`;
+        this.latitude=`${pos.lat}`;
+        // console.log(`Positon: ${pos.lng} ${pos.lat}`);
+     
+         
       });
     // console.log(this.value);
     if(this.currentUser.roles.includes('ROLE_ADMIN')){
@@ -109,9 +117,6 @@ export class HotelComponent implements OnInit {
     this.reverse= !(this.reverse);
 }
 
-changeUsernameHandler(event:any){
-  this.userId=parseInt(event.target.value);
-}
 
 search(){
   if(this.searchResult == ""){
@@ -136,7 +141,7 @@ search(){
 
 
       viewActiveHotel(){
-        this.userService.getAllHotel().subscribe(
+        this.userService.getActiveHotel().subscribe(
           (res) => {
             this.hotelDetail = res;
             this.isHotelDetail = true;
@@ -206,10 +211,12 @@ search(){
         this.hotelUsername = res. hotelUsername;
         this.description = res. description;
         this.panNumber = res.panNumber;
-        this.document=res.document;
         this.phone = res.phone;
+        this.latitude=res.latitude;
+        this.longitude=res.longitude;
         this.hotelId=res.id;
-        console.log(this.editHotelDetail);
+       this.amenities="free parking, Air Conditioning,  free WiFi"
+        
       },
       err =>{
         console.log(err);
@@ -217,13 +224,13 @@ search(){
     );
   }
 
-  addHotelDetail(){
- this.locationService.getPosition().then(pos=>
-  {
-    console.log(`Positon: ${pos.lng} ${pos.lat}`);
- 
+  changeUsernameHandler(event:any){
+    this.userId=parseInt(event.target.value);
+  }
+
+  addHotelDetail(){ 
     this.userService.addHotelDetails(this.userId,this.hotelName,this.hotelOwner,this.city, this.hotelAddress,this.phone,
-      this.panNumber,this.document,  this.status,this.description,this.latitude,this.longitude
+      this.panNumber, this.status,this.description,this.latitude,this.longitude
       ).subscribe(
     res=>{
       this.snackBar.open(res.message, 'Dismiss', {
@@ -248,13 +255,13 @@ search(){
       
     }
     );
-  });
+ 
   }
 
   //edit active Hotel
   editHotel(id:any){
   
-    this.userService.editHotelDetail(id,this.hotelName,this.hotelOwner,this.city,this.hotelAddress,this.panNumber,this.document,this.phone,this.description).subscribe(
+    this.userService.editHotelDetail(id,this.hotelName,this.hotelOwner,this.city,this.hotelAddress,this.panNumber,this.phone,this.latitude, this.longitude, this.description).subscribe(
       res =>{
         
         this.snackBar.open(res.message, 'Dismiss', {
@@ -390,6 +397,45 @@ search(){
      
       }
 
+      
+      getHotelDocument(id:any){      
+            this.hotelService.getDocumentOfHotel(id).subscribe(
+              res=>{
+                console.log(res);
+                this.hotelDocumentDetail=res;
+                   this.uploadDir = res[0].uploadDir;
+                   console.log(this.uploadDir);
+                   
+                  if(this.uploadDir!=null){
+                  this.hotelService.loadHotelDocument(this.uploadDir).subscribe(
+                   res=>{
+                     console.log("getting doc..");
+                        console.log(res);
+                        this.createDocumentFromBlob(res);
+                    },
+                    err=>{
+                      console.log(err);
+                    }
+                  );
+                    }
+              },
+              err=>{
+                this.retrievedDocument = null;
+                console.log(err);
+                // this.showHotelDocument=false;
+              }
+            );
+      }
 
+      createDocumentFromBlob(file:Blob){
+        let reader=new FileReader();
+        reader.addEventListener("load",()=>{
+          this.retrievedDocument=reader.result;
+        },
+        false);
+        if(file){
+          reader.readAsDataURL(file);
+        }
+      }
     }
   

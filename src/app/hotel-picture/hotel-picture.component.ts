@@ -32,10 +32,9 @@ export class HotelPictureComponent implements OnInit {
 
   ngOnInit(): void {
     this.value=this.activatedRouter.snapshot.paramMap.get("id");
-
     
     this.userService.getPictureOfHotel(this.value).subscribe(
-      res=>{
+      res=>{ 
         this.hotelPictureDetail=res;
         if(res.length == 0){
           this.showHotelImage = false;

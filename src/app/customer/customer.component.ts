@@ -67,7 +67,7 @@ this.reverse= !(this.reverse);
 }​​​​​
 
 viewActiveCustomer(){
-  this.userService.getActiveUser().subscribe(
+  this.userService.getActiveCustomer().subscribe(
     res =>{
       console.log(res);
       this.customerDetail = res;
@@ -78,7 +78,6 @@ viewActiveCustomer(){
     },
     err=>{
       console.log(err);
-      
     }
   )
 }
@@ -109,8 +108,7 @@ search(){
     this.ngOnInit();
   }else{
     this.customerDetail=this.customerDetail.filter((res:any) =>{
-      //console.log(res);
-
+   
       if(res.fullname.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
       return res.fullname.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase());
       }
@@ -120,10 +118,10 @@ search(){
       if(res.gender.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
         return res.gender.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase());
         }
-        if(res.idType.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
-          return res.idType.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())
-        }
-    
+        if(res.phone.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase())){
+          return res.phone.toLocaleLowerCase().match(this.searchResult.toLocaleLowerCase());
+          }
+        
     });
   }
 }

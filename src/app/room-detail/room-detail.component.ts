@@ -30,8 +30,14 @@ export class RoomDetailComponent implements OnInit {
   isSelectedFile:boolean=false;
   progress:any;
 
+  showDeleteButton:boolean=false;
   showAddRoomPictureButton:boolean=false;
   showEditButtonOfActiveRoom:boolean=false;
+  showEditButtonOnReserved:boolean=false;
+
+  popoverTitle:string="Are you sure you want to delete?";
+  popoverMessage:string="You can not undo this operation after you confirm to delete.";
+  cancelClicked=false;
 
   constructor( private hotelService : HotelService,
                       private tokenStorageService : TokenStorageService,
@@ -72,6 +78,7 @@ export class RoomDetailComponent implements OnInit {
       this.hotelService.getRoomDetail(this.hotelId).subscribe(
         res=>{
           this.roomDetail=res;
+          this.showDeleteButton=true;
           this.showAddRoomPictureButton=true;
           this.showEditButtonOfActiveRoom=true;
          
@@ -105,9 +112,16 @@ viewInactiveRoomDetail(){
          this.roomDetail=res;
          this.showAddRoomPictureButton=false;
          this.showEditButtonOfActiveRoom=false;
+         this.showEditButtonOnReserved=true;
        },
        err=>{
-         console.log(err);
+        this.snackBar.open(err.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+        });
+        this.refresh();
        }
      );
     },
@@ -139,7 +153,60 @@ viewRoomDetailById(id:any){
       
     },
     err=>{
-      console.log(err);
+      this.snackBar.open(err.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      this.refresh();
+      
+    }
+  )
+}
+
+viewMyHotel(){
+  this.hotelService.getHotelById(this.currentUser.id).subscribe(
+    res=>{
+      // console.log(res);
+      this.hotelName=res.hotelName;
+      this.hotelId=res.id;
+      // this.addRoomDetail(this.hotelId)
+      
+    },
+    err=>{
+      this.snackBar.open(err.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      this.refresh();
+      
+    }
+  )
+}
+
+addRoomDetail(id:number){
+  this.userService.addRoom(id,this.roomNumber,this.roomType,this.description).subscribe(
+    res=>{
+      this.snackBar.open(res.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      this.refresh();
+      
+    },
+    err=>{
+      this.snackBar.open(err.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      this.refresh();
       
     }
   )
@@ -148,15 +215,79 @@ viewRoomDetailById(id:any){
 editActiveRoomDetail(id:any){
   this.hotelService.editActiveRoomDetail(id,this.roomType,this.roomNumber,this.description).subscribe(
     res=>{
-      console.log(res);
+      this.snackBar.open(res.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      this.refresh();
       
     },
     err=>{
-      console.log(err);
+      this.snackBar.open(err.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['success-snackBar'],
+      });
+      this.refresh();
       
     }
   )
 }
+
+changeActiveStatusOfRoom(id:any){
+  this.userService.editActiveStatusOfRoom(id).subscribe(
+  res=>{
+    this.snackBar.open(res.message, 'Dismiss', {
+      duration: 4000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right',
+      panelClass: ['success-snackBar'],
+
+    });
+    this.refresh();
+  },
+  err=>{
+     this.snackBar.open(err.message, 'Dismiss', {
+    duration: 4000,
+    verticalPosition: 'bottom',
+    horizontalPosition: 'right',
+    panelClass: ['red-snackBar'],
+
+  });
+  this.refresh();  
+  }
+  );
+}
+
+
+deleteRoom(id:any){
+  this.userService.deleteRoomById(id).subscribe(
+    res=>{
+      this.snackBar.open(res.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackBar'],
+  
+      });
+      this.refresh();
+    },
+    err=>{
+      this.snackBar.open(err.message, 'Dismiss', {
+        duration: 4000,
+        verticalPosition: 'bottom',
+        horizontalPosition: 'right',
+        panelClass: ['red-snackBar'],
+  
+      });
+      this.refresh();
+    }
+  );
+ }
+  
 
 selectRoomPhotoHandler(event:any){
   this.selectedFile=event.target.files[0];

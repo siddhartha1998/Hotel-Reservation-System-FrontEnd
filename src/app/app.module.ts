@@ -23,6 +23,7 @@ import { OtpComponent } from './otp/otp.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { HomepageComponent } from './homepage/homepage.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
@@ -34,6 +35,9 @@ import { HotelPictureComponent } from './hotel-picture/hotel-picture.component';
 import { AuthGuard } from './_services/authGuard';
 import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
+import { ReservationDetailComponent } from './reservation-detail/reservation-detail.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -54,7 +58,9 @@ import { RoomDetailComponent } from './room-detail/room-detail.component';
     RoomPictureComponent,
     HotelPictureComponent,
     HotelDetailComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    ReservationDetailComponent,
+    CustomerDetailComponent
     
   ],
   imports: [
@@ -67,7 +73,9 @@ import { RoomDetailComponent } from './room-detail/room-detail.component';
     NgxPaginationModule,
     Ng2OrderModule,
     Ng2SearchPipeModule,
+    PdfViewerModule,
     CommonModule,
+    NgApexchartsModule,
     
     //for delete confirmation
 ConfirmationPopoverModule.forRoot({​​​​​

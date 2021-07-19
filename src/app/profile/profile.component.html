@@ -22,10 +22,10 @@
                 </div>
 
                 <div class="container" *ngIf="buttonForHotel">
-                <a   class="btn btn-primary btn-sm"  [routerLink]="['/hotel-detail', hotelId]" >  
+                <a   class="btn btn-primary btn-sm"  [routerLink]="['/hotel-detail', hotelId]">  
                   <i class="fas fa-eye"></i>View Hotel Detail</a>
              
-                <!-- <button class="btn btn-primary btn-sm" *ngIf="buttonForHotel" data-toggle="modal" (click)="getHotel()"
+                <!-- <button class="btn btn-primary btn-sm" *ngIf="!hideAddHotelDetail" data-toggle="modal" 
                 data-target="#viewHotelModal" style="width: 200px; margin-left: 100px; margin-top: 10px;">View Hotel Detail</button> -->
               </div>
             </div>

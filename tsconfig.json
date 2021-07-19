@@ -23,7 +23,9 @@
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,
+    // "strictPropertyInitialization": false,
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
 }
+

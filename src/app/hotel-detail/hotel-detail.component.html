@@ -1,80 +1,208 @@
   <div class="container">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addHotelPictureModal">
-       <i class="fas fa-plus"></i>Add Hotel Picture</button>|
-       <a   class="btn btn-primary"  [routerLink]="['/hotel-picture', hotelId]">  
-        <i class="fas fa-eye"></i>View Hotel Picture</a>|
-      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addHotelDocument">
-        <i class="fas fa-plus"></i>Add Hotel Document</button>|
-      <button type="button" class="btn btn-primary" >
-            <i class="fas fa-eye"></i>View Hotel Document</button>|
-      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editHotelModal" >
+    <button type="button" class="btn btn-primary" data-toggle="modal" 
+    data-target="#addHotelDetailModal" *ngIf="showAddHotelDetailButton" style="margin-right: 5px;" >
+      <i class="fas fa-plus"></i>Add Hotel Detail</button>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal"
+     data-target="#addHotelPictureModal" *ngIf="!showAddHotelDetailButton" style="margin-right: 5px;">
+       <i class="fas fa-plus"></i>Add Hotel Picture</button>
+
+    <a   class="btn btn-primary"  [routerLink]="['/hotel-picture', hotelId]" *ngIf="!showAddHotelDetailButton" style="margin-right: 5px;">  
+        <i class="fas fa-eye"></i>View Hotel Picture</a>
+
+      <button type="button" class="btn btn-primary" data-toggle="modal"
+       data-target="#addHotelDocument" *ngIf="!showAddHotelDetailButton" style="margin-right: 5px;">
+       <i class="fas fa-plus"></i>Add Hotel Document</button> 
+
+      <button type="button" class="btn btn-primary"  (click)="getMyHotelDocument()"
+       data-toggle="modal" data-target="#exampleModalLong"  *ngIf="!showAddHotelDetailButton" style="margin-right: 5px;"> 
+       <i class="fas fa-file"></i>View Hotel Document</button>
+
+      <button type="button" class="btn btn-success" data-toggle="modal"
+       data-target="#editHotelModal"  *ngIf="!showAddHotelDetailButton" style="margin-right: 5px;">
               <i class="fas fa-edit"></i>Edit Hotel Detail</button>
+
+              <a class="btn btn-secondary" (click)="backClicked()">
+                <i class="fas fa-hand-point-left" ></i>Back</a>
             </div>
+            <br>
 
     <div class="container">
   <!-- Form start here -->
   <form>
              
     <div class="form-group">
-      <label for="inputHotelName">HotelName</label>
-      <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName4"  readonly>
+      <label for="inputHotelName"><strong>HotelName</strong></label><br>
+          {{hotelName}}
     </div>
 
     <div class="form-row">
       <div class="form-group col-md-6">
-      <label for="inputHotelUserName">HotelUserName</label>
-      <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="inputHotelUserName4" readonly >
+      <label for="inputHotelUserName"><strong>hotelUsername</strong></label><br>
+        {{hotelUsername}}
       </div>
 
     <div class="form-group col-md-6">
-      <label for="inputHotelOwner">HotelOwner</label>
-      <input type="text"[(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner4" readonly>
+      <label for="inputHotelOwner"><strong>Owner</strong></label><br>
+        {{hotelOwner}}
     </div>
     </div>
 
     <div class="form-row">
       <div class="form-group col-md-6">
-      <label for="inputCity">City</label>
-      <input type="text"  [(ngModel)]="city" name="city" class="form-control" id="inputCity4"  readonly>
+      <label for="inputCity"><strong>City</strong></label><br>
+        {{city}}
       </div>
 
     <div class="form-group col-md-6">
-      <label for="inputHotelAddress">Address</label>
-      <input type="text"[(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress4"  readonly>
+      <label for="inputHotelAddress"><strong>Address</strong></label><br>
+          {{hotelAddress}}
     </div>
     </div>
 
   <div class="form-row">
     <div class="form-group col-md-6">
-    <label for="inputPhone">Phone</label>
-    <input type="text" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhone4"  readonly>
+    <label for="inputPhone"><strong>Phone No.</strong></label><br>
+        {{phone}}
     </div>
 
    <div class="form-group col-md-6">
-      <label for="inputPanNumber">PanNumber</label>
-      <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber4" readonly>
+      <label for="inputPanNumber"><strong>PanNumber</strong></label><br>
+        {{panNumber}}
     </div>
   </div>
 
   <div class="row">
   <div class="form-group col-md-6">
-    <label for="inputLatitude">Latitude</label>
-    <input type="text" [(ngModel)]="latitude" name="latitude" class="form-control" id="inputLatitude" readonly>
+    <label for="inputLatitude"><strong>Latitude</strong></label><br>
+    {{latitude}}
   </div>
 
   <div class="form-group col-md-6">
-    <label for="inputLongitude">Longitude</label>
-    <input type="text" [(ngModel)]="longitude" name="longitude" class="form-control" id="inputLongitude" readonly>
+    <label for="inputLongitude"><strong>Longitude</strong></label><br>
+      {{longitude}}
   </div>
 </div>
 
-   <div class="form-group">
-    <label for="inputDescription">Description</label>
-    <textarea  [(ngModel)]="description" name="description" value="description" class="form-control" id="inputDescription4" readonly>
-    </textarea>
+   <div class="row">
+    <div class="form-group col-md-6">
+    <label for="inputDescription"><strong>Description</strong></label><br>
+    {{description}}
   </div>
+
+  <div class="form-group col-md-6">
+    <label for="inputAmenities"><strong>Amenities</strong></label><br>
+        {{aminities}}
+  </div>
+   </div>
+
   </form>
 </div>
+
+  <!-- Modal for add hotel Detail-->
+  <div class="modal fade" id="addHotelDetailModal" tabindex="-1" role="dialog" aria-labelledby="addHotelDetailModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="addHotelDetailModalLongTitle">Add Hotel</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+         <!-- Form start here -->
+         <form >
+         <div class="form-group">
+             <div class="container">
+               <label style="text-align: center;"><strong>Username</strong></label><br>
+               {{hotelUsername}}
+             </div>
+            </div>
+
+          <div class="form-group">
+          <label for="InputHotelName"><strong>HotelName</strong></label>
+          <input type="text" [(ngModel)]="hotelName" name="hotelName" class="form-control" 
+          id="InputHotelName" placeholder="Enter HotelName">
+         </div>
+         
+         <div class="form-row">
+          <div class="form-group col-md-6">
+                 <label for="status"><strong>Status</strong></label>
+                 <input type="text" [(ngModel)]="status" name="status" class="form-control" 
+                 id="status"  placeholder="Enter hotel Status (eg. 3*, 5*)">
+               </div>
+
+               <div class="form-group col-md-6">
+                <label for="inputHotelOwner"><strong>Owner</strong></label>
+                <input type="text" [(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" 
+                id="inputHotelOwner"  placeholder="Enter HotelOwner">
+               </div>
+           </div>
+
+               <div class="form-row">
+                <div class="form-group col-md-6">
+                <label for="inputCity"><strong>City</strong></label>
+                <input type="text" [(ngModel)]="city" name="city" class="form-control" 
+                id="inputCity" placeholder="Enter Hotel city">
+               </div>
+
+               <div class="form-group col-md-6">
+              <label for="inputHotelAddress"><strong>Hotel Address</strong></label>
+              <input type="text" [(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" 
+              id="inputHotelAddress"  placeholder="Enter Hotel Address">
+             </div>
+             </div>
+
+             <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputPhone"><strong>Phone No.</strong></label>
+              <input type="number" [(ngModel)]="phone" name="phone" class="form-control"
+               id="inputPhone"  placeholder="Enter phone number">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputPanNumber"><strong>PanNumber</strong></label>
+              <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control"
+               id="inputPanNumber"  placeholder="Enter pan number">
+            </div>
+             </div>
+
+             
+            <!-- <div class="form-row">
+              <div class="form-group col-md-6">
+              <label for="inputLatitude"><strong>Latitude</strong></label>
+              <input type="text" [(ngModel)]="latitude" name="latitude" class="form-control" 
+              id="inputLatitude" aria-describedby="descriptionHelp"  placeholder="Enter Latitude">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label for="inputLongitude"><strong>Longitude</strong></label>
+              <input type="text" [(ngModel)]="longitude" name="longitude" class="form-control" 
+              id="inputLongitude" aria-describedby="longitudeHelp"  placeholder="Enter Longitude">
+            </div>
+            </div> -->
+
+ 
+            <div class="form-group">
+              <label for="inputDescription"><strong>Description</strong></label>
+              <textarea [(ngModel)]="description" name="description" class="form-control" 
+              id="inputDescription" aria-describedby="descriptionHelp"></textarea>
+            </div>
+             
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                 <button type="submit" (click)="addHotelDetail()" class="btn btn-success">Add</button>
+               </div>
+             
+           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+<br>
+
 
   <!-- Modal for add  hotel picture -->
 <div class="modal fade" id="addHotelPictureModal" tabindex="-1" role="dialog" aria-labelledby="addHotelPictureModalCenterTitle" aria-hidden="true">
@@ -91,7 +219,7 @@
          <!-- Form start here -->
          <form>      
             <div class="form-group">
-              <label for="inputHotelPicture">Hotel Picture</label>
+              <label for="inputHotelPicture"><strong>Hotel Picture</strong></label>
               <input type="file" class="form-control" name="file" id="hotelpicture" (change)="selectHotelPictureHandler($event)" required/>
             </div>
   
@@ -113,7 +241,7 @@ aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editHotelModalLongTitle">Edit Hotel</h5>
+        <h3 class="modal-title" id="editHotelModalLongTitle">Edit Hotel</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -125,54 +253,54 @@ aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
              
             <div class="form-row">
             <div class="form-group col-md-6">
-              <label for="inputHotelName">HotelName</label>
+              <label for="inputHotelName"><strong>HotelName</strong></label>
               <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName3" >
             </div>
 
             <div class="form-group col-md-6">
-              <label for="inputHotelOwner">HotelOwner</label>
+              <label for="inputHotelOwner"><strong>Owner</strong></label>
               <input type="text"[(ngModel)]="hotelOwner" name="hotelOwner" class="form-control" id="inputHotelOwner3" >
             </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputCity">City</label>
+              <label for="inputCity"><strong>City</strong></label>
               <input type="text"  [(ngModel)]="city" name="city" class="form-control" id="inputCity3" >
               </div>
 
             <div class="form-group col-md-6">
-              <label for="inputHotelAddress">Address</label>
+              <label for="inputHotelAddress"><strong>HotelAddress</strong></label>
               <input type="text"[(ngModel)]="hotelAddress" name="hotelAddress" class="form-control" id="inputHotelAddress3" >
             </div>
             </div>
 
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputPhone">Phone</label>
+            <label for="inputPhone"><strong>Phone No.</strong></label>
             <input type="text" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhone3" >
             </div>
 
            <div class="form-group col-md-6">
-              <label for="inputPanNumber">PanNumber</label>
+              <label for="inputPanNumber"><strong>PanNumber</strong></label>
               <input type="text" [(ngModel)]="panNumber" name="panNumber" class="form-control" id="inputPanNumber3" >
             </div>
           </div>
 
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="inputLatitude">Latitude</label>
-              <input type="text" [(ngModel)]="latitude" name="latitude" class="form-control" id="inputLatitude" >
+              <label for="inputLatitude"><strong>Latitude</strong></label>
+              <input type="text" [(ngModel)]="latitude" name="latitude" class="form-control" id="inputLatitude" readonly>
             </div>
   
             <div class="form-group col-md-6">
-              <label for="inputLongitude">Longitude</label>
-              <input type="text" [(ngModel)]="longitude" name="longitude" class="form-control" id="inputLongitude" >
+              <label for="inputLongitude"><strong>Longitude</strong></label>
+              <input type="text" [(ngModel)]="longitude" name="longitude" class="form-control" id="inputLongitude" readonly>
             </div>
           </div>
 
           <div class="form-group">
-            <label for="inputDescription">Description</label>
+            <label for="inputDescription"><strong>Description</strong></label>
             <textarea  [(ngModel)]="description" name="description" value="description" class="form-control" id="inputDescription4" >
             </textarea>
           </div>
@@ -183,7 +311,6 @@ aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
           </div>
 
           </form>
-
       </div>
     </div>
   </div>
@@ -216,12 +343,53 @@ aria-labelledby="editHotelModalCenterTitle" aria-hidden="true">
            
          </form>
       </div>
-  
     </div>
   </div>
 </div>
 <br>
 
+  <!-- Modal for view  document  -->
+  <!-- <div class="modal fade" id="viewHotelDocument" tabindex="-1" role="dialog" aria-labelledby="addHotelPictureModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="addHotelPictureModalLongTitle">Hotel Document</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+  
+         <pdf-viewer [src]="retrievedDocument" [render-text]="true" [show-all]="true" style="display: block;">
 
+        </pdf-viewer> 
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- Modal -->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content"  >
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle" style="text-align: center;"><strong>View Hotel Document</strong></h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <pdf-viewer [src]="retrievedDocument" [render-text]="true" [show-all]="true" style="display: block;">
+
+        </pdf-viewer> 
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
 
   

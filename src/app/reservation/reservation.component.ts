@@ -28,6 +28,8 @@ customerId:any;
     customer:any;
     checkInDate:any;
     checkOutDate:any;
+    idType:any;
+    idNumber:any;
     noOfGuest:any;
    totalPrice:any;
    reservationTime:any;
@@ -37,7 +39,7 @@ customerId:any;
    customerDetail:any;
    roomDetail:any;
    roomId:any;
-   nonReservedRoom:any;
+   nonReservedRoom:any[]=[];
 
    isReservedRoom:boolean=false;
    isNonReservedRoom:boolean=false;
@@ -53,7 +55,7 @@ showEditButtonForReservation:boolean=false;
 showReserveRoomButton:boolean=false;
 
 
-popoverTitle:string="Are you sure you want to delete?";
+ popoverTitle:string="Are you sure you want to delete?";
   popoverMessage:string="You can not undo this operation after you confirm to delete.";
   cancelClicked=false;
   popoverTitle1:string="Are you sure you want to confirm to reservation?";
@@ -135,29 +137,31 @@ popoverTitle:string="Are you sure you want to delete?";
           this.showEditButtonForTemporaryReservation=false;
           this.isReservedRoom=true;
           this.isNonReservedRoom=false;
-          
-          // console.log(res);
-          
+        
         },
         (err:any)=>{
           console.log(err);
-          
         }
     );
   }
 
   viewNonReservesRoom(){
     this.userService.getNonReservedRoom().subscribe(
-      res=>{
-        this.nonReservedRoom=res;
+      res=>{    
+        for(let i=0; i<res.length; i++){
+          if(res[i].hotel.active==true){
+            this.nonReservedRoom[i]=res[i];
+            console.log(this.nonReservedRoom);
         this.isReservedRoom=false;
         this.isNonReservedRoom=true;
+          }
+        }
+        
         // console.log(res);
         
       },
       err=>{
         console.log(err);
-        
       }
     )
   }
@@ -172,6 +176,8 @@ popoverTitle:string="Are you sure you want to delete?";
         this.checkInDate=res.checkInDate;
         this.checkOutDate=res.checkOutDate;
         this.noOfGuest=res.noOfGuest;
+        this.idType=res.idType;
+        this.idNumber=res.idNumber;
         this.fullname=res.customer.fullname;
         
       },
@@ -192,7 +198,8 @@ popoverTitle:string="Are you sure you want to delete?";
        this.reservationTime=res.reservationTime;
        this.checkInDate=res.checkInDate;
        this.checkOutDate=res.checkOutDate;
-       this.reservedBy=res.reservedBy;
+       this.idType=res.idType;
+       this.idNumber=res.idNumber;
        this.noOfGuest=res.noOfGuest;
        this.fullname=res.customer.fullname;
         
@@ -217,14 +224,40 @@ popoverTitle:string="Are you sure you want to delete?";
       },
       err=>{
         console.log(err);
-        
       }
     )
   }
 
   editReservation(id:any){
-    this.userService.editReservationDetail(id,this.noOfGuest,this.checkInDate,this.checkOutDate).subscribe(
+    this.userService.editReservationDetail(id,this.noOfGuest,this.checkInDate,this.checkOutDate,this.idType,this.idNumber).subscribe(
       res=>{
+        this.snackBar.open(res.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+    
+        });
+        this.refresh();
+      },
+      err=>{
+        this.snackBar.open(err.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+    
+        });
+        this.refresh();
+      }
+    );
+  }
+
+  editTemporaryReservation(id:any){
+    this.userService.editTemporaryReservation(id,this.noOfGuest,this.checkInDate,this.checkOutDate,this.idType,this.idNumber).subscribe(
+      res=>{
+        console.log(res);
+        
         this.snackBar.open(res.message, 'Dismiss', {
           duration: 4000,
           verticalPosition: 'bottom',
@@ -238,47 +271,42 @@ popoverTitle:string="Are you sure you want to delete?";
       err=>{
         console.log(err);
         
-      }
-    )
-  }
-
-  editTemporaryReservation(id:any){
-    this.userService.editTemporaryReservation(id,this.noOfGuest,this.checkInDate,this.checkOutDate).subscribe(
-      res=>{
-        console.log(res);
-        
-      },
-      err=>{
-        console.log(err);
-        
-      }
-    )
-  }
-
-  deleteReservation(id:any){
-    this.userService.deleteReservationById(id).subscribe(
-      res=>{
-        this.snackBar.open(res.message, 'Dismiss', {
-          duration: 4000,
-          verticalPosition: 'bottom',
-          horizontalPosition: 'right',
-          panelClass: ['red-snackBar'],
-    
-        });
-        this.refresh();
-      },
-      err=>{
         this.snackBar.open(err.message, 'Dismiss', {
           duration: 4000,
           verticalPosition: 'bottom',
           horizontalPosition: 'right',
-          panelClass: ['red-snackBar'],
+          panelClass: ['success-snackBar'],
     
         });
         this.refresh();
       }
     );
   }
+
+  // deleteReservation(id:any){
+  //   this.userService.deleteReservationById(id).subscribe(
+  //     res=>{
+  //       this.snackBar.open(res.message, 'Dismiss', {
+  //         duration: 4000,
+  //         verticalPosition: 'bottom',
+  //         horizontalPosition: 'right',
+  //         panelClass: ['red-snackBar'],
+    
+  //       });
+  //       this.refresh();
+  //     },
+  //     err=>{
+  //       this.snackBar.open(err.message, 'Dismiss', {
+  //         duration: 4000,
+  //         verticalPosition: 'bottom',
+  //         horizontalPosition: 'right',
+  //         panelClass: ['red-snackBar'],
+    
+  //       });
+  //       this.refresh();
+  //     }
+  //   );
+  // }
 
   deleteTemporaryReservation(id:any){
     this.userService.deleteTemporaryReservation(id).subscribe(
@@ -294,10 +322,16 @@ popoverTitle:string="Are you sure you want to delete?";
         this.refresh();
       },
       err=>{
-        console.log(err);
-        
+        this.snackBar.open(err.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+    
+        });
+        this.refresh();  
       }
-    )
+    );
   }
 
   confirmTemporaryReservation(id:any){
@@ -316,7 +350,14 @@ popoverTitle:string="Are you sure you want to delete?";
       },
       err=>
       {
-      console.log(err);
+        this.snackBar.open(err.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+    
+        });
+        this.refresh();
       }
     );
   }
@@ -334,10 +375,16 @@ popoverTitle:string="Are you sure you want to delete?";
         this.refresh();
       },
       err=>{
-        console.log(err);
-        
+        this.snackBar.open(err.message, 'Dismiss', {
+          duration: 4000,
+          verticalPosition: 'bottom',
+          horizontalPosition: 'right',
+          panelClass: ['success-snackBar'],
+    
+        });
+        this.refresh();
       }
-    )
+    );
 
   }
 
@@ -364,24 +411,19 @@ popoverTitle:string="Are you sure you want to delete?";
 
   changeHotelnameHandler(event:any){
     this.hotelId=event.target.value;
-    this.getRoomByHotelId(this.hotelId);
-    // this.roomReserved(this.hotelId,this.roomId,this.customerId);
-    
+    this.getRoomByHotelId(this.hotelId);   
   }
 
   changeCustomerNameHandler(event:any){
-    this.customerId=event.target.value;
-    // this.roomReserved(this.hotelId,this.roomId,this.customerId)
-    
+    this.customerId=event.target.value;    
   }
 
   changeRoomNumberHandler(event:any){
     this.roomId=event.target.value;
-    // this.roomReserved(this.hotelId,this.roomId,this.customerId);
   }
 
   getHotelDetail(){
-    this.userService.getAllHotel().subscribe(
+    this.userService.getActiveHotel().subscribe(
       res=>{
         this.hotelDetail=res;
         this.hotelId=res.id;
@@ -397,7 +439,7 @@ popoverTitle:string="Are you sure you want to delete?";
   }
 
   getCustomerDetail(){
-    this.userService.getActiveUser().subscribe(
+    this.userService.getActiveCustomer().subscribe(
       res=>{
         this.customerDetail=res;
         // console.log(res);
@@ -426,7 +468,7 @@ popoverTitle:string="Are you sure you want to delete?";
 
   roomReserved(){
     this.userService.newReservation(this.hotelId,this.roomId,this.customerId,this.hotelName,this.roomNumber,this.fullname,
-      this.checkInDate,this.checkOutDate,this.noOfGuest).subscribe(
+      this.checkInDate,this.checkOutDate,this.noOfGuest, this.idType, this.idNumber).subscribe(
         res=>{
           this.snackBar.open(res.message, 'Dismiss', {
             duration: 4000,

@@ -65,7 +65,7 @@
       <hr class="sidebar-divider">
 
      <!--User -->
-      <li class="nav-item" *ngIf="showUserForAdmin">
+      <li class="nav-item" >
         <a class="nav-link collapsed"  data-toggle="collapse" data-target="#collapseOne"
             aria-expanded="true" aria-controls="collapseOne" style="cursor: pointer;">
             <i class="fas fa-user"></i>
@@ -74,9 +74,20 @@
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">Custom User:</h6>
-                <a class="collapse-item" style="cursor: pointer; " routerLink="/customer/active-customer">Active Customer</a>
-                <a class="collapse-item"routerLink="/customer1/inactive-customer">Inactive Customer</a>
-                <a class="collapse-item"routerLink="/user">Registered User</a>
+                <a class="collapse-item" style="cursor: pointer; " routerLink="/customer/active-customer" 
+                *ngIf="showUserForAdmin">Active Customer</a>
+                <a class="collapse-item"routerLink="/customer1/inactive-customer"
+                 *ngIf="showUserForAdmin">Inactive Customer</a>
+                <a class="collapse-item"routerLink="/user" *ngIf="showUserForAdmin">Registered User</a>
+
+                <a class="collapse-item" style="cursor: pointer; " routerLink="/customer-detail/all-customer" 
+                *ngIf="!showUserForAdmin">All Customer</a>
+                <a class="collapse-item" style="cursor: pointer; " routerLink="/customer-detail1/current-customer" 
+                *ngIf="!showUserForAdmin">Current Customer</a>
+                <a class="collapse-item" style="cursor: pointer;" routerLink="/customer-detail2/reserved-customer" 
+                *ngIf="!showUserForAdmin">Reserved Customer</a>
+                <a class="collapse-item"routerLink="/customer-detail3/checkout-customer" 
+                *ngIf="!showUserForAdmin">Check Out Customer</a>
             </div>
         </div>
     </li>
@@ -113,7 +124,7 @@
                  <a class="collapse-item" routerLink="/room2/active-room" *ngIf="showRoomForAdmin">Active Room</a>
                  <a class="collapse-item" routerLink="/room1/inactive-room" *ngIf="showRoomForAdmin">Inactive Room</a>
                  <a class="collapse-item" routerLink="/room-detail/myActive-room" *ngIf="!showRoomForAdmin">Active Room</a>
-                 <a class="collapse-item" routerLink="/room-detail/myInactive-room" *ngIf="!showRoomForAdmin">Inactive Room</a>
+                 <a class="collapse-item" routerLink="/room-detail1/myInactive-room" *ngIf="!showRoomForAdmin">Inactive Room</a>
                 
                   
                   <!-- <a class="collapse-item" routerLink="/room">Single-bed room</a>
@@ -137,10 +148,14 @@
           <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
               <div class="bg-white py-2 collapse-inner rounded">
                   <h6 class="collapse-header">Reservation screen:</h6>
-                  <a class="collapse-item" routerLink="/reservation1/temporary-reservation">Temporary Reservation </a>
-                  <a class="collapse-item" routerLink="/reservation2/reservation">Reserved Room</a>
-                  <!-- <a class="collapse-item" routerLink="/reservation3/reserved-room">Reserved Room</a> -->
-                  <a class="collapse-item" routerLink="/reservation3/non-reserved-room">Non Reserved Room</a>
+                  <a class="collapse-item" routerLink="/reservation1/temporary-reservation" *ngIf="showReservationForAdmin">Temporary Reservation </a>
+                  <a class="collapse-item" routerLink="/reservation2/reservation" *ngIf="showReservationForAdmin">Reservation Details</a>
+                  <a class="collapse-item" routerLink="/reservation3/non-reserved-room" *ngIf="showReservationForAdmin">Non Reserved Room</a>
+
+                  <a class="collapse-item" routerLink="/reservation-detail1/temporary-reservation" *ngIf=!showReservationForAdmin>Temporary Reservation </a>
+                  <a class="collapse-item" routerLink="/reservation-detail2/reservation" *ngIf="!showReservationForAdmin">Reservation Detail</a>
+                  <a class="collapse-item" routerLink="/reservation-detail3/non-reserved-room" *ngIf="!showReservationForAdmin">Non Reserved Room</a>
+                   <!-- <a class="collapse-item" routerLink="/reservation3/reserved-room">Reserved Room</a> -->
                   <!-- <a class="collapse-item" href="forgot-password.html">Forgot Password</a> -->
                   <!-- <div class="collapse-divider"></div>
                   <h6 class="collapse-header">Other Pages:</h6>
@@ -156,6 +171,7 @@
               <i class="fas fa-fw fa-chart-area"></i>
               <span>Charts</span></a>
       </li> -->
+    
 
       <!-- Nav Item - Tables -->
       <!-- <li class="nav-item">
@@ -163,7 +179,9 @@
               <i class="fas fa-fw fa-table"></i>
               <span>Tables</span></a>
       </li> -->
-
+      <nav class="navbar fixed-bottom  justify-content-center" style="background-color: #202143;" >
+       <i style="color: lightblue;"> Copyright &copy;2020-2021 &nbsp;<strong style="color: snow; ">
+         Hotel Reservation App</strong></i></nav>
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 

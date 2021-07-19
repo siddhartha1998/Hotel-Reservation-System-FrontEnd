@@ -21,20 +21,24 @@ export class UserService implements OnInit {
     this.currentUser = this.token.getUser();
   }
 
-  addHotel(
-    username: string,
-    email: String,
-    password: String,
-    roles: Set<string> = new Set<string>()
+  userRegister(username: any, email: any, password: any,
+    roles:any
   ): Observable<any> {
-    console.log();
+  
     return this.http.post(
       environment.apiUrls + 'auth/signup',
-      { username: username, email: email, password: password, role: [roles] },
+      { username: username, email: email, password: password, role: roles },
       { responseType: 'json' }
     );
   }
-  getAllHotel(): Observable<any> {
+
+  findAllHotel(): Observable<any> {
+    return this.http.get(environment.apiUrls + 'hotel/getAllHotel', {
+      responseType: 'json',
+    });
+  }
+
+  getActiveHotel(): Observable<any> {
     return this.http.get(environment.apiUrls + 'hotel/getHotelDetail', {
       responseType: 'json',
     });
@@ -71,7 +75,7 @@ export class UserService implements OnInit {
     );
   }
 
-  getActiveUser(): Observable<any> {
+  getActiveCustomer(): Observable<any> {
     return this.http.get(environment.apiUrls + 'customer/getCustomerDetail', {
       responseType: 'json',
     });
@@ -91,8 +95,8 @@ export class UserService implements OnInit {
     );
   }
 
-  addHotelDetails(id:any,hotelName:any,hotelOwner:any,city:any,hotelAddress:any,phone:any,panNumber:any,
-  document:any,status:any,description:any, latitude:any,longitude:any
+  addHotelDetails(id:any,  hotelName:any,hotelOwner:any,city:any,hotelAddress:any,phone:any,panNumber:any,
+  status:any,description:any, latitude:any,longitude:any
     ):Observable<any>{
     return this.http.post(environment.apiUrls + 'adminController/addHotelDetail/' +id, {
     
@@ -102,7 +106,6 @@ export class UserService implements OnInit {
       hotelAddress : hotelAddress,
       phone : phone,
       panNumber : panNumber,
-      document : document,
       status : status,
       description : description,
       latitude : latitude,
@@ -153,7 +156,7 @@ export class UserService implements OnInit {
   }
 
   editHotelDetail( id: any,  hotelName: any,  hotelOwner: any,  city: any,
-    hotelAddress: any,  panNumber: any,  document: any,  phone: any,  description: any
+    hotelAddress: any,  panNumber: any, phone: any, latitude:any, longitude:any, description: any
   ): Observable<any> {
     return this.http.put(
       environment.apiUrls + 'adminController/updateHotelDetail/' + id,
@@ -163,8 +166,9 @@ export class UserService implements OnInit {
         city: city,
         hotelAddress: hotelAddress,
         panNumber: panNumber,
-        document: document,
         phone: phone,
+        latitude : latitude,
+        longitude : longitude,
         description: description,
       },
       { responseType: 'json' }
@@ -349,8 +353,8 @@ export class UserService implements OnInit {
     return this.http.get(environment.apiUrls + 'room/getInactiveRoom/', {responseType:'json'});
   }
 
-  getNonReservedRoomDetail():Observable<any>{
-    return this.http.get(environment.apiUrls + 'room/getAvailableRoom/', {responseType:'json'});
+  getActiveRoomDetail():Observable<any>{
+    return this.http.get(environment.apiUrls + 'room/getActiveRoom/', {responseType:'json'});
   }
 
   getRoomDetailById(id:any):Observable<any>{
@@ -395,7 +399,7 @@ export class UserService implements OnInit {
   }
 
   deleteRoomById(id:any):Observable<any>{
-    return this.http.put(environment.apiUrls + 'room/deleteRoomDetail/' +id, {responseType:'json'});
+    return this.http.put(environment.apiUrls + 'adminController/deleteRoomDetail/' +id, {responseType:'json'});
   }
 
   getTemporaryReservationDetail():Observable<any>{
@@ -418,44 +422,51 @@ export class UserService implements OnInit {
     return this.http.get(environment.apiUrls + 'adminController/getTemporaryReservationDetailById/' +id,{responseType:'json'});
   }
 
-  editReservationDetail(id:any,noOfGuest:any,checkInDate:any,checkOutDate:any):Observable<any>{
+  editReservationDetail(id:any,noOfGuest:any,checkInDate:any,checkOutDate:any,idType:any,idNumber:any):Observable<any>{
     return this.http.put(environment.apiUrls + 'adminController/updateReservationDetail/' +id,
     {
       noOfGuest : noOfGuest,
       checkInDate : checkInDate,
-      checkOutDate : checkOutDate
+      checkOutDate : checkOutDate,
+      idType : idType,
+      idNumber : idNumber
     },
     {responseType:'json'});
   }
 
-  editTemporaryReservation(id:any,noOfGuest:any,checkInDate:any,checkOutDate:any):Observable<any>{
+  editTemporaryReservation(id:any,noOfGuest:any,checkInDate:any,checkOutDate:any,idType:any,idNumber:any):Observable<any>{
     return this.http.put(environment.apiUrls + 'adminController/updateTemporaryReservation/' +id,
     {
       noOfGuest : noOfGuest,
       checkInDate : checkInDate,
-      checkOutDate : checkOutDate
+      checkOutDate : checkOutDate,
+      idType : idType,
+      idNumber : idNumber
     },
     {responseType:'json'});
   }
 
-  deleteReservationById(id:any):Observable<any>{
-    return this.http.put(environment.apiUrls + 'adminController/deleteReservationDetail/' +id, {responseType:'json'});
-  }
+  // deleteReservationById(id:any):Observable<any>{
+  //   return this.http.put(environment.apiUrls + 'adminController/deleteReservationDetail/' +id, {responseType:'json'});
+  // }
 
   deleteTemporaryReservation(id:any):Observable<any>{
     return this.http.put(environment.apiUrls + 'adminController/deleteTemporaryReservation/' +id, {responseType:'json'});
   }
 
-  newReservation(hotelId:any,roomId:any,customerId:any,hotelName:any,roomNumber:any,fullname:any,checkInDate:any,checkOutDate:any,noOfGuest:any):Observable<any>{
-    return this.http.post(environment.apiUrls + 'adminController/newTemporaryReservation/hotel/' +hotelId+"/room/" +roomId+"/customer/"
-    +customerId ,
+  newReservation(hotelId:any,roomId:any,customerId:any,hotelName:any,roomNumber:any,fullname:any,
+    checkInDate:any,checkOutDate:any,noOfGuest:any,idType:any, idNumber:any):Observable<any>{
+    return this.http.post(environment.apiUrls + 'adminController/newTemporaryReservation/hotel/'
+     +hotelId+"/room/" +roomId+"/customer/" +customerId ,
     {
       hotelName:hotelName,
       roomNumber:roomNumber,
       fullname:fullname,
       checkInDate:checkInDate,
       checkOutDate:checkOutDate,
-      noOfGuest:noOfGuest
+      noOfGuest:noOfGuest,
+      idType:idType,
+      idNumber:idNumber
     },{responseType:'json'});
   }
 

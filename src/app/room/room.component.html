@@ -92,8 +92,8 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let room of roomDetail | orderBy : key:reverse 
-         |  paginate: { itemsPerPage: 5, currentPage: page,totalItems: totalRecords } ">
+        <tr *ngFor="let room of activeHotelRoom | orderBy : key:reverse 
+         |  paginate: { itemsPerPage: 4, currentPage: page,totalItems: totalRecords } ">
              <td>{{ room.id }}</td> 
              <td>{{ room.hotel.hotelName }}</td> 
              <td>{{ room.roomType }}</td>
@@ -105,21 +105,22 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
                 [popoverMessage]="popoverMessage"
                 placement="left"
                 (confirm)="deleteRoom(room.id)"
-                (cancel)="cancelClicked = true"
-                *ngIf="showDeleteButton"><i class="fa fa-trash"></i></button>|
+                (cancel)="cancelClicked = true" style="margin-right: 4px;"
+                *ngIf="showDeleteButton"><i class="fa fa-trash"></i></button>
 
                 <button  class="btn btn-secondary" (click)="ViewRoomDetailById(room.id)" 
-                 [hidden]="!showEditButtonOnNotReserved"   data-toggle="modal" 
+                 [hidden]="!showEditButtonOnNotReserved"   data-toggle="modal" style="margin-right: 4px;"
                  data-target="#editRoomModal"><i class="fas fa-edit" ></i></button>
 
-                <button   class="btn btn-secondary" (click)="reservedWalaEdit(room.id)" 
+                <button   class="btn btn-secondary" (click)="reservedWalaEdit(room.id)"  style="margin-right: 4px;"
                  [hidden]="!showEditButtonOnReserved"><i class="fas fa-edit" ></i></button>
 
-                <button (click)="ViewRoomDetailById(room.id)"  class="btn btn-success" 
-                 data-toggle="modal" data-target="#viewRoomModal"><i class="fas fa-eye"></i></button>|
+                <button (click)="ViewRoomDetailById(room.id)"  class="btn btn-success"  style="margin-right: 4px;"
+                 data-toggle="modal" data-target="#viewRoomModal"><i class="fas fa-eye"></i></button>
 
-                 <button (click)="ViewRoomDetailById(room.id)"  class="btn btn-primary" *ngIf="showAddRoomPictureButton"
-                 data-toggle="modal" data-target="#addRoomProfileModal"><i class="fa fa-plus"></i></button>|
+                 <button (click)="ViewRoomDetailById(room.id)"  style="margin-right: 4px;"
+                  class="btn btn-primary" *ngIf="showAddRoomPictureButton"
+                 data-toggle="modal" data-target="#addRoomProfileModal"><i class="fa fa-plus"></i></button>
 
                  <a   class="btn btn-primary"  [routerLink]="['/room-picture', room.id]">  
             <i class="fas fa-eye"></i></a></td> 
@@ -136,7 +137,7 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewRoomModalLongTitle">View Room</h5>
+        <h3 class="modal-title" id="viewRoomModalLongTitle"><strong>View Room Details</strong></h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -148,31 +149,31 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
              
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputHotelName">HotelName</label>
-              <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName" readonly>
+              <label><strong>HotelName</strong></label><br>
+                  {{hotelName}}
             </div>
 
             <div class="form-group col-md-6">
-              <label for="inputRoomType">Room type</label>
-              <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType" readonly>
+              <label><strong>HotelUserName</strong></label><br>
+                  {{hotelUsername}}
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputHotelUserName">HotelUserName</label>
-              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="inputHotelUserName" readonly >
+                <label><strong>RoomType</strong></label><br>
+                  {{roomType}}
               </div>
 
 
             <div class="form-group col-md-6">
-              <label for="inputRoomNumber">Room Number</label>
-              <input type="text"[(ngModel)]="roomNumber" name="roomNumber" class="form-control" id="inputRoomNumber" readonly>
+              <label><strong>Room Number</strong></label><br>
+                  {{roomNumber}}
             </div>
             </div>
 
            <div class="form-group">
-            <label for="inputDescription">Description</label><br>
+            <label for="inputDescription"><strong>Description</strong></label><br>
             {{description }}
             <!-- <textarea [(ngModel)]="description" name="description" class="form-control" id="inputDescription" readonly></textarea> -->
           </div>
@@ -194,7 +195,7 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editRoomModalLongTitle">Edit Room</h5>
+        <h3 class="modal-title" id="editRoomModalLongTitle"><strong>Edit Room</strong></h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -206,37 +207,33 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
              
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputHotelName">HotelName</label>
+              <label><strong>HotelName</strong></label>
               <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName1" readonly>
             </div>
 
             <div class="form-group col-md-6">
-              <label for="inputRoomType">Room type</label>
-              <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType1" >
+              <label><strong>HotelUserName</strong></label>
+              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" 
+              class="form-control" id="inputHotelUserName1" readonly >
+             
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputHotelUserName">HotelUserName</label>
-              <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" 
-              class="form-control" id="inputHotelUserName1" readonly >
+                <label><strong>RoomType</strong></label>
+                <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType1" >
               </div>
 
 
             <div class="form-group col-md-6">
-              <label for="inputRoomNumber">Room Number</label>
+              <label><strong>RoomNumber</strong></label>
               <input type="text"[(ngModel)]="roomNumber" name="roomNumber" class="form-control" id="inputRoomNumber1" >
             </div>
             </div>
 
-          <!-- <div class="form-group">
-            <label for="inputRoomPhoto">Room Photo</label>
-            <input type="file" name="roomPhoto" class="form-control" id="inputRoomPhoto" >
-          </div> -->
-
            <div class="form-group">
-            <label for="inputDescription">Description</label>
+            <label><strong>Description</strong></label>
             <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription1" >
           </div>
 
@@ -247,7 +244,6 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
           </div>
 
           </form>
-
       </div>
     </div>
   </div>
@@ -259,7 +255,7 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title" id="addRoomProfileModalLongTitle">Add Room Picture</h3>
+            <h3 class="modal-title" id="addRoomProfileModalLongTitle"><strong>Add Room Picture</strong></h3>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -271,7 +267,7 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
           
            >      
               <div class="form-group">
-                <label for="inputProfilePicture">Profile Picture</label>
+                <label for="inputProfilePicture"><strong>Select Room Picture</strong></label>
                 <input type="file" class="form-control" name="file" id="profile" (change)="selectFileHandler($event)" required/>
               </div>
    
@@ -282,9 +278,7 @@ data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"
                
              </form>
   
-  
           </div>
-      
         </div>
       </div>
     </div>

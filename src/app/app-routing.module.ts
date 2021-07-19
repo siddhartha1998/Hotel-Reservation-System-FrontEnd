@@ -19,6 +19,8 @@ import { HotelPictureComponent } from './hotel-picture/hotel-picture.component';
 import { AuthGuard } from './_services/authGuard';
 import { HotelDetailComponent } from './hotel-detail/hotel-detail.component';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
+import { ReservationDetailComponent } from './reservation-detail/reservation-detail.component';
+import { CustomerDetailComponent } from './customer-detail/customer-detail.component';
 
 
 const routes: Routes = [
@@ -49,6 +51,13 @@ const routes: Routes = [
   { path:'room-detail1/:id', component:RoomDetailComponent},
   { path:'hotel-picture/:id', component:HotelPictureComponent},
   { path:'hotel-detail/:id', component:HotelDetailComponent},
+  { path:'reservation-detail1/:id',component:ReservationDetailComponent},
+  { path:'reservation-detail2/:id',component:ReservationDetailComponent},
+  { path:'reservation-detail3/:id',component:ReservationDetailComponent},
+  { path: 'customer-detail/:id', component: CustomerDetailComponent},
+  { path: 'customer-detail1/:id',component: CustomerDetailComponent},
+  { path: 'customer-detail2/:id',component: CustomerDetailComponent},
+  { path: 'customer-detail3/:id',component: CustomerDetailComponent},
   { path:'profile',component:ProfileComponent},
   {path: 'forgot-password', component:ForgotPasswordComponent},
   { path:'otp',component:OtpComponent}

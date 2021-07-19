@@ -1,4 +1,63 @@
 
+<button class="btn btn-primary"  (click)="viewMyHotel()"  *ngIf="showAddRoomPictureButton" data-toggle="modal" 
+data-target="#addRoomDetail" style="margin-bottom: 10px;"><i class="fas fa-plus"></i>Add Room Details</button>
+
+ <!-- Modal for add room detail -->
+ <div class="modal fade" id="addRoomDetail" tabindex="-1" role="dialog"
+ aria-labelledby="addRoomDetailCenterTitle" aria-hidden="true">
+ <div class="modal-dialog modal-dialog-centered" role="document">
+   <div class="modal-content">
+     <div class="modal-header">
+       <h3 class="modal-title" id="addRoomDetailLongTitle">Add Room Detail</h3>
+       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+         <span aria-hidden="true">&times;</span>
+       </button>
+     </div>
+     <div class="modal-body">
+
+      <!-- Form start here -->
+      <form >
+
+      <div class="form-group">
+        <div class="container" >
+          <label style="text-align: center;"><strong>HotelName</strong></label><br>
+           {{hotelName}}
+        </div>
+       </div>
+     
+      <div class="form-row">
+       <div class="form-group col-md-6">
+         <label for="inputRoomNumber"><strong>Room Number</strong></label>
+         <input type="text" [(ngModel)]="roomNumber" name="roomNumber" class="form-control" 
+         id="roomNumber"  placeholder="Enter Room Number.....">
+        </div>
+
+        <div class="form-group col-md-6">
+         <label for="inputRoomType"><strong>Room Type</strong></label>
+         <input type="text" [(ngModel)]="roomType" name="roomType" class="form-control" 
+         id="roomType"  placeholder="Enter Room Type.....">
+        </div>   
+        </div>
+
+          <div class="mb-3">
+           <label for="inputDescription"><strong>Description</strong></label>
+           <textarea  [(ngModel)]="description" class="form-control" id="description" name="description" 
+            placeholder="Write the description of room....."></textarea>
+         </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+              <button (click)="addRoomDetail(hotelId)" type="submit" class="btn btn-success">Add</button>
+            </div>
+          
+        </form>
+     </div>
+   </div>
+ </div>
+</div>
+<br>
+
+
 <!--Room detail-->
 <div class="table-responsive">
     <table class="table table-striped table-hover" >
@@ -20,19 +79,27 @@
                <td>{{ room.roomType }}</td>
                <td>{{ room.roomNumber }}</td>
                <td>{{ room.active }}</td>
-               <td>
+               <td><button class="btn btn-danger"
+                mwlConfirmationPopover
+                  [popoverTitle]="popoverTitle"
+                  [popoverMessage]="popoverMessage"
+                  placement="left"
+                  (confirm)="deleteRoom(room.id)"
+                  (cancel)="cancelClicked = true"
+                  *ngIf="showDeleteButton" style="margin-right: 4px;"><i class="fa fa-trash"></i></button>
+
+                  <button   class="btn btn-secondary" (click)="changeActiveStatusOfRoom(room.id)" 
+                   [hidden]="!showEditButtonOnReserved" style="margin-right: 4px;"><i class="fas fa-edit" ></i></button>
+
                   <button  class="btn btn-secondary" (click)="viewRoomDetailById(room.id)" 
                    [hidden]="!showEditButtonOfActiveRoom"   data-toggle="modal" 
-                   data-target="#editRoomModal"><i class="fas fa-edit" ></i></button>|
-                    <!--
-                  <button   class="btn btn-secondary" (click)="reservedWalaEdit(room.id)" 
-                   [hidden]="!showEditButtonOnReserved"><i class="fas fa-edit" ></i></button> -->
-  
+                   data-target="#editRoomModal" style="margin-right: 4px;"><i class="fas fa-edit" ></i></button>
+                    
                   <button (click)="viewRoomDetailById(room.id)"  class="btn btn-success" 
-                   data-toggle="modal" data-target="#viewRoomModal"><i class="fas fa-eye"></i></button>| 
+                   data-toggle="modal" data-target="#viewRoomModal" style="margin-right: 4px;"><i class="fas fa-eye"></i></button>
   
                     <button (click)="viewRoomDetailById(room.id)"  class="btn btn-primary" *ngIf="showAddRoomPictureButton"
-                   data-toggle="modal" data-target="#addRoomProfile"><i class="fa fa-plus"></i></button>|
+                   data-toggle="modal" data-target="#addRoomProfile" style="margin-right: 4px;"><i class="fa fa-plus"></i></button>
   
                    <a   class="btn btn-primary"  [routerLink]="['/room-picture', room.id]">  
               <i class="fas fa-eye"></i></a></td> 
@@ -45,11 +112,12 @@
   </div>
     
 <!--Modal start here for view room detail-->
-<div class="modal fade" id="viewRoomModal" tabindex="-1" role="dialog" aria-labelledby="viewRoomModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="viewRoomModal" tabindex="-1" role="dialog"
+ aria-labelledby="viewRoomModalCenterTitle"  aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="viewRoomModalLongTitle">View Room</h5>
+          <h3 class="modal-title" id="viewRoomModalLongTitle">View Room</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -61,31 +129,31 @@
                
               <div class="form-row">
                 <div class="form-group col-md-6">
-                <label for="inputHotelName">HotelName</label>
-                <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName" readonly>
+                <label for="inputHotelName"><strong>HotelName</strong></label><br>
+                  {{hotelName}}
               </div>
   
               <div class="form-group col-md-6">
-                <label for="inputRoomType">Room type</label>
-                <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType" readonly>
+                <label for="inputHotelUserName"><strong>HotelUserName</strong></label><br>
+                {{hotelUsername}}
                 </div>
               </div>
   
               <div class="form-row">
                 <div class="form-group col-md-6">
-                <label for="inputHotelUserName">HotelUserName</label>
-                <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" class="form-control" id="inputHotelUserName" readonly >
+                  <label for="inputRoomNumber"><strong>Room Number</strong></label><br>
+                  {{roomNumber}}
                 </div>
   
-  
               <div class="form-group col-md-6">
-                <label for="inputRoomNumber">Room Number</label>
-                <input type="text"[(ngModel)]="roomNumber" name="roomNumber" class="form-control" id="inputRoomNumber" readonly>
+                <label for="inputRoomType"><strong>Room Type</strong></label><br>
+                {{roomType}}
+               
               </div>
               </div>
   
              <div class="form-group">
-              <label for="inputDescription">Description</label><br>
+              <label for="inputDescription"><strong>Description</strong></label><br>
               {{description }}
               <!-- <textarea [(ngModel)]="description" name="description" class="form-control" id="inputDescription" readonly></textarea> -->
             </div>
@@ -96,7 +164,6 @@
             </div>
   
             </form>
-  
         </div>
       </div>
     </div>
@@ -107,7 +174,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="editRoomModalLongTitle">Edit Room</h5>
+          <h3 class="modal-title" id="editRoomModalLongTitle">Edit Room</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -119,33 +186,33 @@
                
               <div class="form-row">
                 <div class="form-group col-md-6">
-                <label for="inputHotelName">HotelName</label>
+                <label for="inputHotelName"><strong>HotelName</strong></label>
                 <input type="text"[(ngModel)]= "hotelName" name="hotelName" class="form-control" id="inputHotelName1" readonly>
               </div>
   
               <div class="form-group col-md-6">
-                <label for="inputRoomType">Room type</label>
-                <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType1" >
+                <label for="inputHotelUserName"><strong>HotelUserName</strong></label>
+                <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" 
+                class="form-control" id="inputHotelUserName1" readonly >
                 </div>
               </div>
   
               <div class="form-row">
                 <div class="form-group col-md-6">
-                <label for="inputHotelUserName">HotelUserName</label>
-                <input type="text"  [(ngModel)]="hotelUsername" name="hotelUsername" 
-                class="form-control" id="inputHotelUserName1" readonly >
+                  <label for="inputRoomType"><strong>RoomType</strong></label>
+                  <input type="text" [(ngModel)]="roomType" name="roomType"  class="form-control" id="inputRoomType1" >
                 </div>
   
   
               <div class="form-group col-md-6">
-                <label for="inputRoomNumber">Room Number</label>
+                <label for="inputRoomNumber"><strong>Room Number</strong></label>
                 <input type="text"[(ngModel)]="roomNumber" name="roomNumber" class="form-control" id="inputRoomNumber1" >
               </div>
               </div>
   
             
              <div class="form-group">
-              <label for="inputDescription">Description</label>
+              <label for="inputDescription"><strong>Description</strong></label>
               <input type="text" [(ngModel)]="description" name="description" class="form-control" id="inputDescription1" >
             </div>
   
@@ -177,7 +244,7 @@
          <!-- Form start here -->
          <form >      
             <div class="form-group">
-              <label for="inputProfilePicture">Profile Picture</label>
+              <label for="inputProfilePicture"><strong>Room Picture</strong></label>
               <input type="file" class="form-control" name="file" id="profile" (change)="selectRoomPhotoHandler($event)" required/>
             </div>
  

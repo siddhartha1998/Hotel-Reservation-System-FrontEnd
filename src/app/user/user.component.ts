@@ -8,18 +8,24 @@ import { UserService } from '../_services/user.service';
   styleUrls: ['./user.component.css']
 })
 export class UserComponent implements OnInit {
-
+  form: any = {};
   registeredUserDetail:any;
   userId:any;
   username:any;
   password:any;
-  roles: Set<string> = new Set<string>();
+  searchResult:any;
+  // roles: Set<string> = new Set<string>();
+  roles:any[]=[];
   role:any;
+  roleId:any;
   email:any;
   viewUser:any;
   page: number = 1;
+  errorMessage = '';
 
   isRegisteredUser:boolean=false;
+  isSuccessful:boolean = false;
+  isSignUpFailed:boolean = false;
 
   constructor( private userService : UserService,
                       private snackBar : MatSnackBar)      
@@ -36,14 +42,13 @@ this.key=key;
 this.reverse= !(this.reverse);
 }
 
+
 viewRegisteredHotel() {
   this.userService.getRegisteredHotel().subscribe(
     (res:any) => {
       console.log(res);
+      
       this.registeredUserDetail = res;
-      // this.totalRecords=this.hotelDetail.length;
-    
-      // this.isRegisteredHotel= true;
       this.isRegisteredUser=true;
       
     },
@@ -73,9 +78,11 @@ UserClicked(id:any){
   );
 }
 
+selectRole(event:any){
+    this.roles.push(event.target.value);
+}
 onSubmit() {
-  // console.log('i am from on submit ' + this.roles);
-  this.userService.addHotel(this.username, this.email, this.password, this.roles)
+  this.userService.userRegister(this.form.username, this.form.email, this.form.password, this.roles)
     .subscribe(
       (res) => {
         this.snackBar.open(res.message, 'Dismiss', {
@@ -88,12 +95,12 @@ onSubmit() {
       },
       (err) => {
         console.log(err);
+        this.errorMessage = err.error.message;
       }
     );
 }
 reloadPage(): void {
   window.location.reload();
 }
-
 
 }

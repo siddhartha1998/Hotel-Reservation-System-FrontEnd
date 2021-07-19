@@ -1,11 +1,12 @@
 <div class="input-group">
-  <input type="search" class="form-control rounded" placeholder="Search Customers by name, address, gender and idType" 
+  <input type="search" class="form-control rounded" placeholder="Search Customers by name, address, gender" 
   [(ngModel)]="searchResult" 
   (ngModelChange)="search()" aria-label="Search"
     aria-describedby="search-addon" />
 </div>
    
-    <button type="submit" class="btn btn-primary" (click)="viewUserAuthentication()"  *ngIf="showAddCustomerButton" style="margin-top: 8px;margin-bottom: 8px;"
+    <button type="submit" class="btn btn-primary" (click)="viewUserAuthentication()"  
+    *ngIf="showAddCustomerButton" style="margin-top: 8px;margin-bottom: 8px;"
     data-toggle="modal" data-target="#addCustomerDetailModal">
       <i class="fa fa-plus" aria-hidden="true"></i>Add Customer Detail</button>
 
@@ -18,18 +19,17 @@
           <th scope="col" (click)="sort('id')">#<i class="fa fa-sort"></i></th>
           <th scope="=col" (click)="sort('fullname')" >Fullname<i class="fa fa-sort"></i></th>
           <th scope="col" (click)="sort('address')" >Address<i class="fa fa-sort"></i></th>
-          <th scope="col" (click)="sort('idType')" >IdType<i class="fa fa-sort"></i></th>
           <th scope="col" (click)="sort('gender')">Gender<i class="fa fa-sort"></i></th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
       <tbody>
     
-        <tr *ngFor="let activeCustomer of customerDetail  | orderBy: key:reverse |  paginate: { itemsPerPage: 5,currentPage: page }  " >
+        <tr *ngFor="let activeCustomer of customerDetail  | orderBy: key:reverse | 
+         paginate: { itemsPerPage: 5,currentPage: page }  " >
           <td>{{activeCustomer.id }}</td>
           <td>{{activeCustomer.fullname}}</td>
           <td>{{activeCustomer.address}}</td>
-          <td>{{activeCustomer.idType}}</td>
           <td>{{activeCustomer.gender}}</td>
           <td>
             <button class="btn btn-danger"
@@ -37,11 +37,13 @@
               [popoverTitle]="popoverTitle"
               [popoverMessage]="popoverMessage"
               placement="left"
-              (confirm)="deleteCustomer(activeCustomer.id)"
-              (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button>|
-              <button (click)="activeCustomerClicked(activeCustomer.id)" class="btn btn-secondary" 
-              data-toggle="modal" data-target="#editCustomerModal"><i class="fas fa-edit"></i></button>|
-              <button (click)="activeCustomerClicked(activeCustomer.id)" class="btn btn-success" 
+              (confirm)="deleteCustomer(activeCustomer.id)" style="margin-right: 4px;"
+              (cancel)="cancelClicked = true"><i class="fa fa-trash"></i></button>
+
+              <button (click)="activeCustomerClicked(activeCustomer.id)" class="btn btn-secondary" style="margin-right: 4px;"
+              data-toggle="modal" data-target="#editCustomerModal"><i class="fas fa-edit"></i></button>
+
+              <button (click)="activeCustomerClicked(activeCustomer.id)" class="btn btn-success" style="margin-right: 4px;"
               data-toggle="modal" data-target="#viewCustomerModal"><i class="fas fa-eye"></i></button>
           </td> 
        </tr>
@@ -70,15 +72,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let inactiveUser of inactiveCustomerDetail   | orderBy: key:reverse |  paginate: { itemsPerPage: 5,currentPage: page }  ">
+        <tr *ngFor="let inactiveUser of inactiveCustomerDetail   | orderBy: key:reverse | 
+         paginate: { itemsPerPage: 5,currentPage: page }  ">
           <td>{{ inactiveUser.id }}</td>
           <td>{{ inactiveUser.fullname }}</td>
           <td>{{ inactiveUser.username }}</td>
           <td>{{ inactiveUser.email }}</td>
           <td>{{ inactiveUser.active }}</td>
-          <td><button (click)="changeActiveStatusOfCustomer(inactiveUser.id)" class="btn btn-secondary">
-            <i class="fas fa-edit"></i></button>|
-            <button (click)="activeCustomerClicked(inactiveUser.id)" class="btn btn-success" 
+          <td><button (click)="changeActiveStatusOfCustomer(inactiveUser.id)" class="btn btn-secondary" style="margin-right: 4px;">
+            <i class="fas fa-edit"></i></button>
+
+            <button (click)="activeCustomerClicked(inactiveUser.id)" class="btn btn-success"  style="margin-right: 4px;"
             data-toggle="modal" data-target="#viewCustomerModal"><i class="fas fa-eye"></i></button></td>
     
       </tr>
@@ -90,9 +94,10 @@
       <pagination-controls (pageChange)="page = $event" style="display: flex; float:right;"></pagination-controls>
       </div>
 
-       <!--Modal start here for  Add  customer detail-->
 
-<div class="modal fade" id="addCustomerDetailModal" tabindex="-1" role="dialog" aria-labelledby="addCustomerDetailModalCenterTitle" aria-hidden="true">
+<!--Modal start here for  Add  customer detail-->
+<div class="modal fade" id="addCustomerDetailModal" tabindex="-1" role="dialog"
+ aria-labelledby="addCustomerDetailModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -124,37 +129,25 @@
              </div>
 
             <div class="form-group col-md-6">
-            <label for="inputCustomerFullname">Fullname</label>
-            <input type="text"  [(ngModel)]="fullname" name="customerFullname" class="form-control" id="inputCustomerFullname4" >
+            <label for="inputCustomerFullname"><strong>Customer Name</strong></label>
+            <input type="text"  [(ngModel)]="fullname" name="customerName" class="form-control" id="CustomerFullname4" >
             </div>
-
-          <!-- <div class="form-group col-md-6">
-            <label for="inputUsername1">Username</label>
-            <input type="text"[(ngModel)]="username" name="username" class="form-control" id="inputUsername4" readonly>
-          </div> -->
           </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputAddress">Address</label>
-              <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="inputAddress4"  >
+              <label for="inputAddress"><strong>Address</strong></label>
+              <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="Address4"  >
               </div>
 
-              <!-- <div class="form-group col-md-6">
-                <label for="inputGender">Gender</label>
-                <input type="text" [(ngModel)]="gender" name="gender"  class="form-control" id="inputGender4" > 
-                </div> -->
-
-                
-                  <div class="form-group col-md-6">
-                    
-                    <label>Gender</label>
+                <div class="form-group col-md-6">
+                  <label><strong>Gender</strong></label>
                     <div class="row" style="margin-left: 5px;">
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="gender"  value="Male"
-                      id="radioForMale" (change)=changeGenderHandler($event) checked>
+                      id="radioForMale" (change)=changeGenderHandler($event) >
                       <label >Male</label>
-                    </div>
+                  </div>
         
                     <div class="form-check">
                       <input class="form-check-input" type="radio" name="gender" value="Female"
@@ -171,30 +164,17 @@
                   </div>
                 </div>
    
-            <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="inputIdType">IdType</label>
-                <input type="text"  [(ngModel)]="idType" name="idType" class="form-control" id="inputIdType"  >
-                </div>
-
-            <div class="form-group col-md-6">
-              <label for="inputIdNumber">IdNumber</label>
-              <input type="text"[(ngModel)]="idNumber" name="idNumber" class="form-control" id="inputIdNumber4"  >
-            </div>
-            </div>
-
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputPhoneNo">Phone</label>
-            <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhoneNo4" >
+            <label for="inputPhoneNo"><strong>Phone No,</strong></label>
+            <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="PhoneNo4" >
             </div>
 
            <div class="form-group col-md-6">
-              <label for="inputAge">Age</label>
-              <input type="number" [(ngModel)]="age" name="age" class="form-control" id="inputAge4"  >
+              <label for="inputAge"><strong>Age</strong></label>
+              <input type="number" [(ngModel)]="age" name="age" class="form-control" id="Age4"  >
             </div>
           </div>
-
 
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -202,19 +182,18 @@
           </div>
 
           </form>
-
       </div>
     </div>
   </div>
 </div>
 
-    <!--Modal start here for  Edit active customer detail-->
 
+ <!--Modal start here for  Edit active customer detail-->
 <div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog" aria-labelledby="editCustomerModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editCustomerModalLongTitle">Edit Customer Detail</h5>
+        <h3 class="modal-title" id="editCustomerModalLongTitle"><strong>Edit Customer Detail</strong></h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -222,62 +201,65 @@
       <div class="modal-body">
 
           
-          <form
-          >
+          <form >
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputCustomerFullname">Fullname</label>
+            <label for="inputCustomerFullname"><strong>CustomerName</strong></label>
             <input type="text"  [(ngModel)]="fullname" name="customerFullname" class="form-control" id="inputCustomerFullname" >
             </div>
 
           <div class="form-group col-md-6">
-            <label for="inputUsername1">Username</label>
+            <label for="inputUsername1"><strong>Username</strong></label>
             <input type="text"[(ngModel)]="username" name="username" class="form-control" id="inputUsername" readonly>
           </div>
           </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputAddress">Address</label>
+              <label for="inputAddress"><strong>Address</strong></label>
               <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="inputAddress"  >
               </div>
 
-              <div class="form-group col-md-4">
-                <label for="inputGender">Gender</label>
-                <input type="text" [(ngModel)]="gender" name="gender"  class="form-control" id="inputGender" > 
+              <div class="form-group col-md-6">
+                <label><strong>Gender</strong></label>
+                    <div class="row" style="margin-left: 5px;">
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender"  value="Male"
+                      id="radioForMale" (change)=changeGenderHandler($event) >
+                      <label >Male</label>
+                  </div>
+        
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" value="Female"
+                       id="radioForFemale" (change)=changeGenderHandler($event) >
+                      <label > Female</label>
+                    </div>
+
+                    <div class="form-check">
+                      <input class="form-check-input" type="radio" name="gender" value="Others"
+                       id="radioForOther" (change)=changeGenderHandler($event) >
+                      <label >Other</label>
+                    </div>
+                  </div>
                 </div>
             </div>
 
             <div class="form-group">
-              <label for="inputEmail">Email</label>
+              <label for="inputEmail"><strong>Email</strong></label>
               <input type="email" [(ngModel)]="email" name="email" class="form-control" id="inputEmail"  readonly>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-6">
-              <label for="inputIdType">IdType</label>
-              <input type="text"  [(ngModel)]="idType" name="idType" class="form-control" id="inputIdType"  >
-              </div>
-
-            <div class="form-group col-md-6">
-              <label for="inputIdNumber">IdNumber</label>
-              <input type="text"[(ngModel)]="idNumber" name="idNumber" class="form-control" id="inputIdNumber"  >
-            </div>
             </div>
 
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputPhoneNo">Phone</label>
+            <label for="inputPhoneNo"><strong>Phone No.</strong></label>
             <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhoneNo" >
             </div>
 
            <div class="form-group col-md-6">
-              <label for="inputAge">Age</label>
+              <label for="inputAge"><strong>Age</strong></label>
               <input type="number" [(ngModel)]="age" name="age" class="form-control" id="inputAge"  >
             </div>
           </div>
-
-
 
           <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -285,19 +267,18 @@
           </div>
 
           </form>
-
       </div>
     </div>
   </div>
 </div>
 
-<!--Modal start here for  view active customer detail-->
 
+<!--Modal start here for  view active customer detail-->
 <div class="modal fade" id="viewCustomerModal" tabindex="-1" role="dialog" aria-labelledby="viewCustomerModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="viewCustomerModalLongTitle">Customer Detail</h5>
+        <h3 class="modal-title" id="viewCustomerModalLongTitle"><strong>View Customer Detail</strong></h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -305,58 +286,45 @@
       <div class="modal-body">
 
           
-          <form
-          >
+          <form>
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputCustomerFullname">Fullname</label>
-            <input type="text"  [(ngModel)]="fullname" name="customerFullname" class="form-control" id="inputCustomerFullname1"  readonly>
+            <label for="inputCustomerFullname"><strong>CustomerName</strong></label><br>
+             {{fullname}}
             </div>
 
           <div class="form-group col-md-6">
-            <label for="inputUsername1">Username</label>
-            <input type="text"[(ngModel)]="username" name="username" class="form-control" id="inputUsername1"  readonly>
+            <label for="inputUsername1"><strong>Username</strong></label><br>
+              {{username}}
           </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inputEmail"><strong>Email</strong></label><br>
+              {{email}}
           </div>
 
             <div class="form-row">
               <div class="form-group col-md-6">
-              <label for="inputAddress">Address</label>
-              <input type="text"  [(ngModel)]="address" name="address" class="form-control" id="inputAddress1"  readonly>
+              <label for="inputAddress"><strong>Address</strong></label><br>
+                  {{address}}
               </div>
 
               <div class="form-group col-md-4">
-                <label for="inputGender">Gender</label>
-                <input type="text" [(ngModel)]="gender" name="gender"  class="form-control" id="inputGender1" readonly> 
+                <label for="inputGender"><strong>Gender</strong></label><br>
+                  {{gender}}
                 </div>
-            </div>
-
-            <div class="form-group">
-              <label for="inputEmail">Email</label>
-              <input type="email" [(ngModel)]="email" name="email" class="form-control" id="inputEmail1" readonly>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-md-6">
-              <label for="inputIdType">IdType</label>
-              <input type="text"  [(ngModel)]="idType" name="idType" class="form-control" id="inputIdType1"  readonly>
-              </div>
-
-            <div class="form-group col-md-6">
-              <label for="inputIdNumber">IdNumber</label>
-              <input type="text"[(ngModel)]="idNumber" name="idNumber" class="form-control" id="inputIdNumber1"  readonly>
-            </div>
             </div>
 
           <div class="form-row">
             <div class="form-group col-md-6">
-            <label for="inputPhoneNo">Phone</label>
-            <input type="number" [(ngModel)]="phone" name="phone"  class="form-control" id="inputPhoneNo1" readonly>
+            <label for="inputPhoneNo"><strong>Phone No.</strong></label><br>
+                {{phone}}
             </div>
 
            <div class="form-group col-md-6">
-              <label for="inputAge">Age</label>
-              <input type="number" [(ngModel)]="age" name="age" class="form-control" id="inputAge1"  readonly>
+              <label for="inputAge"><strong>Age</strong></label><br>
+                {{age}}
             </div>
           </div>
 
@@ -365,7 +333,6 @@
           </div>
 
           </form>
-
       </div>
     </div>
   </div>

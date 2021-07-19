@@ -24,6 +24,8 @@ export class RoomComponent implements OnInit {
   description:any;
   roomData:any;
   price:any;
+activeHotelRoom:any[]=[];
+
 
   hotelDetail:any;
   hotelId:any;
@@ -64,12 +66,9 @@ export class RoomComponent implements OnInit {
   ngOnInit(): void {
 
     this.currentUser=this.tokenStorageService.getUser();
-
   this.value = this.activatedRoute.snapshot.params.id;
-
   if(this.value=="all-room"){
     this.viewRoomDetail();
-
  }
  if(this.value=="active-room"){
   this.getActiveRoom();
@@ -80,9 +79,9 @@ export class RoomComponent implements OnInit {
 
   }
 
-  onSubmit(){
+  // onSubmit(){
 
-  }
+  // }
 
   refresh(){
     window.location.reload();
@@ -94,11 +93,6 @@ export class RoomComponent implements OnInit {
        sort(key:string){​​​​​
        this.key=key;
        this.reverse= !(this.reverse);
-   }
-
-   changeHotelnameHandler(event:any){
-      this.hotelId=event.target.value;
-      
    }
 
    search(){
@@ -142,10 +136,29 @@ export class RoomComponent implements OnInit {
     );
   }
 
+  // viewAllHotel(){
+  //   this.userService.findAllHotel().subscribe(
+  //     res=>{
+  //       console.log(res);
+  //       for(let i=0; i<res.length; i++){
+  //         if(res[i].active==false){
+  //           console.log("this hotel is not available");
+  //         }else{
+  //           this.getActiveRoom();
+  //         }
+  //       }
+      
+  //     },
+  //     err=>{
+  //       console.log(err);  
+  //     }
+  //   );
+  // }
+
   getInactiveRoom(){
     this.userService.getInactiveRoomDetail().subscribe(
       res=>{
-        this.roomDetail=res;
+        this.activeHotelRoom=res;
        this.showDeleteButton=false;
     this.showEditButtonOnReserved = true;
     this.showEditButtonOnNotReserved = false;
@@ -159,14 +172,16 @@ export class RoomComponent implements OnInit {
   }
 
   getActiveRoom(){
-    this.userService.getNonReservedRoomDetail().subscribe(
+    this.userService.getActiveRoomDetail().subscribe(
       res=>{
-        this.roomDetail=res;
-        this.showDeleteButton=true;
-        this.showEditButtonOnReserved = false;
-        this.showEditButtonOnNotReserved = true;
-        this.showAddRoomPictureButton=true;
-        
+            
+            this.activeHotelRoom=res; 
+            console.log(this.activeHotelRoom);
+            this.showDeleteButton=true;
+            this.showEditButtonOnReserved = false;
+            this.showEditButtonOnNotReserved = true;
+            this.showAddRoomPictureButton=true;
+               
       },
       err=>{
 
@@ -189,9 +204,11 @@ export class RoomComponent implements OnInit {
     )
   }
 
+  
   viewHotelDetail(){
-    this.userService.getAllHotel().subscribe(
+    this.userService.getActiveHotel().subscribe(
       res=>{
+        console.log(res);
         this.hotelDetail=res;
        
       },
@@ -201,6 +218,7 @@ export class RoomComponent implements OnInit {
       }
     )
   }
+
 
   //autoflled data to the modal
   ViewRoomDetailById(id:any){
@@ -287,6 +305,7 @@ this.userService.editRoomById(id,this.roomNumber,this.roomType,this.description)
   }
 );
   }
+  
   reservedWalaEdit(id:any){
     this.userService.editActiveStatusOfRoom(id).subscribe(
     res=>{
@@ -316,13 +335,30 @@ this.userService.editRoomById(id,this.roomNumber,this.roomType,this.description)
     )
   }
 
+  changeHotelnameHandler(event:any){
+    this.hotelId=event.target.value;
+ }
+
   addRoomDetail(){
     this.userService.addRoom(this.hotelId,this.roomNumber,this.roomType,this.description).subscribe(
       res=>{
-        console.log(res);
+       this.snackBar.open(res.message, 'Dismiss', {
+       duration: 4000,
+       verticalPosition: 'bottom',
+       horizontalPosition: 'right',
+      panelClass: ['success-snackBar'],
+    });
+    this.refresh();
       },
       err=>{
-        console.log(err);
+       
+    this.snackBar.open(err.message, 'Dismiss', {
+      duration: 4000,
+      verticalPosition: 'bottom',
+      horizontalPosition: 'right',
+      panelClass: ['success-snackBar'],
+    });
+    this.refresh();
         
       }
     )

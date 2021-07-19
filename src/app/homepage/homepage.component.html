@@ -1,62 +1,15 @@
 
-<!-- Button trigger modal -->
-<br>
+<!-- <apx-chart [series]="series" [chart]="chart" [title]="title"></apx-chart>
+<apx-chart #chartObj></apx-chart> -->
+
+<!--The content below is only a placeholder and can be replaced.-->
+<!-- <div id="chart">
+  <apx-chart
+    [series]="chartOptions?.series"
+    [chart]="chartOptions?.chart"
+    [labels]="chartOptions?.labels"
+    [responsive]="chartOptions?.responsive"
+  ></apx-chart>
+</div> -->
+
   
-  <!-- Modal -->
-  <div class="modal fade" id="addHotelModal" tabindex="-1" role="dialog" aria-labelledby="addHotelModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addHotelModalLongTitle">Add Hotel</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-
-            <!-- Form start here -->
-            <form 
-            
-            name="form"
-            #f="ngForm"
-            (ngSubmit)="f.form.valid && onSubmit()"
-           
-            novalidate
-            >
-
-                <div class="form-group">
-                    <label for="exampleInputUsername1">Username</label>
-                    <input type="text" [(ngModel)]="username" name="username" class="form-control" id="exampleInputUsername1" aria-describedby="usernameHelp" placeholder="Enter username">
-                  </div>
-
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" [(ngModel)]="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                 
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" [(ngModel)]="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                </div>
-                <div class="form-select">
-                 <label>Role</label><br>
-                 <select [(ngModel)]="roles" name="roles" class="form-control">
-                     <option value="admin">Admin</option>
-                     <option value="hotel">Hotel</option>
-                     <option value="customer">Customer</option>
-                 </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-success">Add</button>
-                  </div>
-                
-              </form>
-
-        </div>
-    
-      </div>
-    </div>
-  </div>
-<br>
-

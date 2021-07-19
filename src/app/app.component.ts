@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , ViewChild} from '@angular/core';
 import { Router } from '@angular/router';
 import { TokenStorageService } from './_services/token-storage.service';
 import { UserService } from './_services/user.service';
+import { ChartComponent } from "ng-apexcharts";
 
 @Component({
   selector: 'app-root',
@@ -10,6 +11,7 @@ import { UserService } from './_services/user.service';
 
 })
 export class AppComponent implements OnInit {
+
   private roles: string[]=[];
   isLoggedIn = false;
   showAdminBoard = false;
@@ -21,6 +23,7 @@ export class AppComponent implements OnInit {
   showForAdmin:boolean=false;
   showUserForAdmin:boolean=false;
   showRoomForAdmin:boolean=false;
+  showReservationForAdmin:boolean=false;
 
   constructor(
     private tokenStorageService : TokenStorageService, 
@@ -55,11 +58,13 @@ export class AppComponent implements OnInit {
         this.showForAdmin=true;
         this.showUserForAdmin=true;
         this.showRoomForAdmin=true;
+        this.showReservationForAdmin=true;
       }
       if(this.roles.includes('ROLE_HOTEL')){
         this.showForAdmin=false;
         this.showUserForAdmin=false;
         this.showRoomForAdmin=false;
+        this.showReservationForAdmin=false;
       }
      
       this.username = this.user.username;

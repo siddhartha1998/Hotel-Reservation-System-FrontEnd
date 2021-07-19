@@ -43,7 +43,6 @@ export class ProfileComponent implements OnInit {
     private tokenStorageService: TokenStorageService,
     private userService: UserService,
     private snackBar: MatSnackBar,
-    private hotelService : HotelService
   ) { }
 
   ngOnInit(): void {
@@ -211,69 +210,5 @@ uploadProfilePicture(){
  );
  
   }
-
-
-  // //edit active Hotel
-  // editHotel(id:any){
-  
-  //   this.hotelService.editHotelDetail(id,this.hotelName,this.hotelOwner,this.city,this.hotelAddress,
-  //     this.panNumber,this.document,this.phone,this.description).subscribe(
-  //     res =>{
-        
-  //       this.snackBar.open(res.message, 'Dismiss', {
-  //        duration: 4000,
-  //        verticalPosition: 'bottom',
-  //        horizontalPosition: 'right',
-  //        panelClass: ['success-snackBar'],
- 
-  //      });
-  //      this.refresh();
-  //     },
-  //     err =>{
-  //       console.log(err);
-  //     }
-  //   )
-  //  }
-
-  //  selectHotelPictureHandler(event:any){
-  //   this.selectedFile=event.target.files[0];
-  //   this.isSelectedFile=true;
-  // }
-
-  // uploadHotelPicture(id:any){
-  //   // this.isLoading = true;
-  //  const uploadProfileImage:FormData = new FormData();
-  //  uploadProfileImage.append('hotelPic',this.selectedFile, this.selectedFile.name);
-  //  this.hotelService.addHotelPicture(id,uploadProfileImage).subscribe(
-  //  (res:any)=>{
-  
-  //   this.snackBar.open(res.message, 'Dismiss', {
-  //     duration: 4000,
-  //     verticalPosition: 'bottom',
-  //     horizontalPosition: 'right',
-  //     panelClass: ['success-snackBar'],
-  //   });
-  //   this.refresh();
-  // //  this.isLoading = false;
-  
-  //  },
-  //  err =>{
-  //  this.progress = 0;
-  //  this.snackBar.open(err.body.message,'Dismiss',{
-  //  duration: 4000,
-  //  verticalPosition: 'bottom',
-  //  horizontalPosition: 'right',
-  //  panelClass:['red-snackBar'],
-  //  });
-   
-  //   setTimeout(()=>{
-  //  window.location.reload();
-  //  },5000)
-  //  }
-  //  );
-   
-  //   }
-
-
 
 }

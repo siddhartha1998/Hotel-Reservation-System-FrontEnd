@@ -1,6 +1,6 @@
-<div class="container-fluid " *ngIf="!(isGenerateOtp)">
+<div class="container-fluid " *ngIf="!(isGenerateOtp)" >
   <div class="row justify-content-center align-items-center" >
-      <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 h-auto">
+      <div class="col col-sm-6 col-md-6 col-lg-4 col-xl-3 h-auto" >
 
       <label style="text-align: center; margin-left: 50px; color: rgb(36, 36, 116);"><b>Application Login</b> </label>
       <br>
@@ -9,13 +9,11 @@
         name="form"
         #f="ngForm"
         (ngSubmit)="f.form.valid && onSubmit()"
-       
         novalidate
       >
          <div class="form-group">
           <label for="username" >Username <i class="fas fa-user"></i></label>
           <input
-          
             type="text"
             class="form-control"
             name="username"
@@ -41,6 +39,7 @@
             [(ngModel)]="form.password"
             required
             minlength="6"
+            maxlength="20"
             #password="ngModel"
             
           />
@@ -53,6 +52,9 @@
             <div *ngIf="password.errors?.required">Password is required</div>
             <div *ngIf="password.errors?.minlength">
               Password must be at least 6 characters
+            </div>
+            <div *ngIf="password.errors?.maxlength">
+              Password must be atmost 20 characters
             </div>
           </div>
         </div>
